@@ -23,5 +23,9 @@ venv/
 
 # Build
 dist/
-build/
 node_modules/
+
+# electron-builder output (but keep desktop/build/ resources)
+desktop/dist/
+build/
+!desktop/build/

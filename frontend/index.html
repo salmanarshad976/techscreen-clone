@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tech Screen — Invisible AI Interview Assistant</title>
+<meta name="description" content="Tech Screen is an invisible AI interview assistant that helps you ace technical interviews with real-time, undetectable assistance." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="./assets/app.css">
+<script src="./assets/api.js" defer></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          brand: {
+            50:  '#ecfdf5',
+            100: '#d1fae5',
+            200: '#a7f3d0',
+            300: '#6ee7b7',
+            400: '#34d399',
+            500: '#10b981',
+            600: '#059669',
+            700: '#047857',
+          }
+        },
+        fontFamily: {
+          sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'sans-serif'],
+          display: ['Orbitron', 'Inter', 'sans-serif'],
+        }
+      }
+    }
+  }
+</script>
+<!-- shared styles loaded from assets/app.css -->
+</head>
+<body class="overflow-x-hidden">
+
+<!-- Glow background wrapper -->
+<div class="relative">
+  <!-- top frame -->
+  <div class="relative max-w-[1240px] mx-auto px-4 sm:px-6 pt-6">
+    <div class="frame relative overflow-hidden">
+      <!-- glow + grid -->
+      <div class="absolute inset-0 glow-green pointer-events-none"></div>
+      <div class="absolute inset-0 grid-bg opacity-40 pointer-events-none"></div>
+
+      <!-- nav -->
+      <nav class="relative z-10 flex items-center justify-between px-6 sm:px-8 py-5">
+        <a href="./index.html" class="flex items-center gap-2.5">
+          <span class="w-8 h-8 rounded-lg flex items-center justify-center font-black text-black" style="background: linear-gradient(180deg,#34d399,#059669); box-shadow: 0 6px 20px rgba(16,185,129,0.35);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 6.5L4 17.5L12 22L20 17.5L20 6.5L12 2L4 6.5Z" stroke="black" stroke-width="2" stroke-linejoin="round"/><path d="M9 11L11 13L15 9" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span class="font-semibold tracking-tight">TechScreen</span>
+        </a>
+        <div class="hidden md:flex items-center gap-8 text-sm text-gray-300">
+          <a href="./index.html" class="hover:text-white">Home</a>
+          <a href="./pricing.html" class="hover:text-white">Pricing</a>
+          <a href="#faq" class="hover:text-white">FAQ</a>
+        </div>
+        <div id="nav-auth" class="flex items-center gap-3">
+          <a id="nav-login" href="./login.html" class="hidden sm:inline text-sm text-gray-300 hover:text-white">Log In</a>
+          <a id="nav-cta" href="./register.html" class="btn-primary text-sm px-4 py-2 inline-flex items-center gap-2">
+            Get Started
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </nav>
+
+      <!-- hero -->
+      <section class="relative z-10 px-6 sm:px-8 pt-10 pb-16 text-center">
+        <div class="inline-flex items-center gap-2 pill-border rounded-full px-3 py-1.5 text-xs text-gray-300">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.39 5.95L20 8.5l-4.5 4 1.34 6L12 15.77 7.16 18.5l1.34-6L4 8.5l5.61-.55L12 2z" fill="#34d399"/></svg>
+          Trusted by <span class="text-white font-semibold">65,000+</span> candidates
+        </div>
+
+        <h1 class="display mt-8 text-[64px] sm:text-[112px] md:text-[148px] leading-[0.9] font-black text-white">
+          Tech Screen
+        </h1>
+
+        <p class="mt-6 text-xl sm:text-2xl font-semibold text-white">Your Invisible Interview Assistant</p>
+        <p class="mt-3 text-sm sm:text-base text-gray-400">Don't Let a Tough Question Cost You Your Dream Job.</p>
+        <p class="mt-3 text-brand-300 font-semibold">Try For Free Today</p>
+
+        <div class="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <a href="./register.html" class="btn-primary px-5 py-3 inline-flex items-center gap-2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16.365 1.43c0 1.14-.43 2.22-1.13 3.02-.78.91-2.04 1.6-3.07 1.52-.13-1.12.42-2.27 1.1-3.02.79-.92 2.13-1.59 3.1-1.52zM20.5 17.27c-.5 1.16-.74 1.68-1.39 2.71-.91 1.43-2.19 3.21-3.79 3.22-1.42.01-1.78-.93-3.71-.92-1.93.01-2.33.94-3.75.92-1.6-.02-2.81-1.62-3.72-3.05C1.61 16.93.86 13.04 2.45 10.4c1.14-1.89 2.94-3.07 4.86-3.07 1.49 0 2.94.74 3.71.74.78 0 2.66-.92 4.36-.78.7.03 2.66.28 3.93 2.13-3.45 1.93-2.88 6.86 1.19 7.85z"/></svg>
+            Get For Mac
+          </a>
+          <a href="./register.html" class="btn-ghost px-5 py-3 inline-flex items-center gap-2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.4l8.4-1.2v8.4H3V5.4zM12.6 4l8.4-1.2V13H12.6V4zM3 13.8h8.4v8.4L3 21V13.8zM12.6 14H21v9l-8.4-1.2V14z"/></svg>
+            Get For Windows
+          </a>
+        </div>
+
+        <div class="mt-5 inline-flex items-center gap-2 text-xs text-gray-400">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="13" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M3 10h18" stroke="currentColor" stroke-width="1.7"/></svg>
+          NO CREDIT CARD REQUIRED
+        </div>
+
+        <div class="hero-watermark mt-10 text-5xl sm:text-7xl md:text-8xl select-none">Version 2.0</div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Tech Screen In Action -->
+  <section class="relative max-w-[1240px] mx-auto px-4 sm:px-6 mt-24">
+    <h2 class="text-center text-4xl sm:text-5xl font-extrabold tracking-tight">Tech Screen <span class="text-brand-400">In Action</span></h2>
+
+    <div class="mt-12 relative card-strong overflow-hidden p-3 sm:p-5">
+      <div class="rounded-xl overflow-hidden relative bg-black aspect-[16/8.5]">
+        <!-- split screen mock -->
+        <div class="absolute inset-0 flex">
+          <div class="flex-1 relative" style="background: linear-gradient(135deg,#3a1f0f,#1a0e08);">
+            <div class="absolute top-3 left-3 text-[10px] tracking-[0.3em] text-brand-300/80 font-semibold">YOUR SCREEN</div>
+            <!-- floating panel mock -->
+            <div class="absolute right-6 bottom-6 left-6 mock">
+              <div class="mock-titlebar">
+                <span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span>
+                <span class="ml-2 text-[10px] text-gray-400">Code · Python</span>
+              </div>
+              <div class="p-3 text-[11px] leading-relaxed text-gray-300 code-line">
+                <div><span class="text-pink-400">def</span> <span class="text-brand-300">two_sum</span>(nums, target):</div>
+                <div class="pl-4 text-gray-500"># Use a dictionary to store each number and its index.</div>
+                <div class="pl-4 text-gray-500"># For each number, calculate the complement.</div>
+                <div class="pl-4">seen = {}</div>
+                <div class="pl-4"><span class="text-pink-400">for</span> i, n <span class="text-pink-400">in</span> enumerate(nums):</div>
+                <div class="pl-8">complement = target - n</div>
+                <div class="pl-8"><span class="text-pink-400">if</span> complement <span class="text-pink-400">in</span> seen:</div>
+                <div class="pl-12"><span class="text-pink-400">return</span> [seen[complement], i]</div>
+                <div class="pl-8">seen[n] = i</div>
+              </div>
+            </div>
+          </div>
+          <div class="flex-1 relative" style="background: linear-gradient(135deg,#0d3b2b,#06140e);">
+            <div class="absolute top-3 right-3 inline-flex items-center gap-1.5 text-[10px] tracking-[0.2em] text-gray-300 font-semibold">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.7"/></svg>
+              SCREEN SHARE
+            </div>
+            <div class="absolute inset-x-10 bottom-8 top-12 rounded-lg" style="background: radial-gradient(circle at 50% 40%, rgba(255,255,255,0.08), rgba(0,0,0,0));"></div>
+            <div class="absolute left-1/2 -translate-x-1/2 bottom-10 text-center">
+              <div class="w-20 h-20 rounded-full mx-auto" style="background: radial-gradient(circle at 50% 40%, #c9a987, #6b4a35);"></div>
+              <div class="mt-3 text-[11px] text-gray-300/70">Interviewer view — TechScreen invisible</div>
+            </div>
+          </div>
+        </div>
+        <div class="scanline"></div>
+      </div>
+    </div>
+
+    <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="card p-5 flex items-start gap-4">
+        <div class="icon-tile">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 3l18 18M10.6 10.6a2 2 0 002.8 2.8M9.9 5.1A11 11 0 0112 5c5 0 9 5 9 7 0 .8-.6 2-1.7 3.3M6.6 6.6C4.2 8.2 3 10.5 3 12c0 2 4 7 9 7 1.6 0 3-.5 4.3-1.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <h3 class="font-semibold text-white">Invisibility</h3>
+          <p class="text-sm text-gray-400 mt-1">Undetectable on any platform</p>
+        </div>
+      </div>
+      <div class="card p-5 flex items-start gap-4">
+        <div class="icon-tile">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <h3 class="font-semibold text-white">Speed</h3>
+          <p class="text-sm text-gray-400 mt-1">Lightning-fast responses</p>
+        </div>
+      </div>
+      <div class="card p-5 flex items-start gap-4">
+        <div class="icon-tile">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>
+        </div>
+        <div>
+          <h3 class="font-semibold text-white">Accuracy</h3>
+          <p class="text-sm text-gray-400 mt-1">Precise, reliable answers</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Compatibility -->
+  <section class="relative max-w-[1240px] mx-auto px-4 sm:px-6 mt-28">
+    <h2 class="text-center text-4xl sm:text-5xl font-extrabold tracking-tight">
+      Tech Screen stays<br/>
+      <span class="text-brand-400">completely</span> undetected
+    </h2>
+
+    <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <!-- compat card template -->
+      <div class="card p-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background:#4b53bc;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M2 7h11v10H2zM14 9h7l-3.5 3L21 15h-7z"/></svg>
+          </div>
+          <span class="font-medium">Microsoft Teams</span>
+        </div>
+        <span class="badge-undetected">Undetected</span>
+      </div>
+      <div class="card p-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background:#2D8CFF;">
+            <span class="text-white font-bold text-xs">zoom</span>
+          </div>
+          <span class="font-medium">Zoom</span>
+        </div>
+        <span class="badge-undetected">Undetected</span>
+      </div>
+      <div class="card p-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background:#5F60FF;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="4" r="2"/><circle cx="12" cy="20" r="2"/><circle cx="4" cy="12" r="2"/><circle cx="20" cy="12" r="2"/></svg>
+          </div>
+          <span class="font-medium">Chime</span>
+        </div>
+        <span class="badge-undetected">Undetected</span>
+      </div>
+      <div class="card p-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-lg flex items-center justify-center bg-white">
+            <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#00897B" d="M14 13l5 4V7l-5 4z"/><rect x="3" y="6" width="13" height="12" rx="2" fill="#00ACC1"/></svg>
+          </div>
+          <span class="font-medium">Meet</span>
+        </div>
+        <span class="badge-undetected">Undetected</span>
+      </div>
+      <div class="card p-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background:#1a1a1a;border:1px solid rgba(255,255,255,0.1);">
+            <span class="text-brand-300 font-bold text-xs">&lt;/&gt;</span>
+          </div>
+          <span class="font-medium">CoderPad</span>
+        </div>
+        <span class="badge-undetected">Undetected</span>
+      </div>
+      <div class="card p-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background:#1a1a1a;border:1px solid rgba(255,255,255,0.1);">
+            <span class="text-white font-bold text-xs">C</span>
+          </div>
+          <span class="font-medium">Codility</span>
+        </div>
+        <span class="badge-undetected">Undetected</span>
+      </div>
+      <div class="card p-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-lg flex items-center justify-center bg-white">
+            <svg width="18" height="18" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#00BCEB"/><circle cx="9" cy="12" r="2" fill="white"/><circle cx="15" cy="12" r="2" fill="white"/></svg>
+          </div>
+          <span class="font-medium">Webex</span>
+        </div>
+        <span class="badge-undetected">Undetected</span>
+      </div>
+      <div class="card p-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background:#0a0a0a;border:1px solid rgba(255,255,255,0.1);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#00EA64"><path d="M12 2l9 5v10l-9 5-9-5V7l9-5z"/></svg>
+          </div>
+          <span class="font-medium">Hackerrank</span>
+        </div>
+        <span class="badge-undetected">Undetected</span>
+      </div>
+    </div>
+
+    <div class="mt-10 text-center">
+      <h3 class="text-2xl font-bold">And ANY other interview software</h3>
+      <p class="mt-2 text-sm text-gray-400">Checked daily for compatibility</p>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="relative max-w-[1240px] mx-auto px-4 sm:px-6 mt-32">
+    <h2 class="text-center text-4xl sm:text-5xl font-extrabold tracking-tight">
+      Everything you need<br/>
+      to <span class="text-brand-400">CRASH</span> an interview!
+    </h2>
+
+    <!-- Feature 1: Invisible Screen Sharing -->
+    <div class="mt-16 grid md:grid-cols-2 gap-10 items-center">
+      <div class="order-2 md:order-1">
+        <div class="icon-tile mb-4">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M8 21h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        <h3 class="text-3xl font-bold text-brand-400">Invisible Screen Sharing</h3>
+        <p class="mt-3 text-gray-300 max-w-md">Stay completely hidden while sharing your screen. Works seamlessly with Zoom, Teams, Meet, and all major interview platforms without leaving a trace.</p>
+      </div>
+      <div class="order-1 md:order-2">
+        <div class="card p-3">
+          <div class="mock">
+            <div class="mock-titlebar">
+              <span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span>
+              <span class="ml-2 text-[10px] text-gray-400">Zoom Meeting · You're sharing screen</span>
+            </div>
+            <div class="aspect-[16/9] grid grid-cols-2">
+              <div class="relative" style="background: linear-gradient(135deg,#1f2937,#0b0b0b);">
+                <div class="absolute top-2 left-2 text-[10px] text-gray-500">Your view</div>
+                <div class="absolute right-3 bottom-3 left-3 top-8 rounded-lg border border-brand-500/40 bg-black/70 p-2">
+                  <div class="text-[10px] text-brand-300 font-semibold mb-1">TechScreen</div>
+                  <div class="code-line text-[10px] text-gray-300 leading-relaxed">
+                    <div><span class="text-pink-400">def</span> reverse_list(head):</div>
+                    <div class="pl-3">prev = <span class="text-amber-300">None</span></div>
+                    <div class="pl-3"><span class="text-pink-400">while</span> head:</div>
+                    <div class="pl-6">nxt = head.next</div>
+                    <div class="pl-6">head.next = prev</div>
+                    <div class="pl-6">prev = head</div>
+                  </div>
+                </div>
+              </div>
+              <div class="relative" style="background: linear-gradient(135deg,#0a0a0a,#1a1a1a);">
+                <div class="absolute top-2 left-2 text-[10px] text-gray-500">Interviewer view</div>
+                <div class="absolute right-3 bottom-3 left-3 top-8 rounded-lg" style="background:#0e0e0e;"></div>
+                <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[10px] text-gray-500 italic">nothing visible</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 2: Always On Top -->
+    <div class="mt-20 grid md:grid-cols-2 gap-10 items-center">
+      <div>
+        <div class="card p-3">
+          <div class="mock">
+            <div class="mock-titlebar">
+              <span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span>
+              <span class="ml-2 text-[10px] text-gray-400">LeetCode · Two Sum</span>
+            </div>
+            <div class="aspect-[16/9] relative p-4 text-[11px] text-gray-400">
+              <div class="font-semibold text-white text-sm">1. Two Sum</div>
+              <p class="mt-2">Given an array of integers, return indices of the two numbers such that they add up to a specific target.</p>
+              <div class="absolute right-6 bottom-6 w-2/3 mock">
+                <div class="mock-titlebar"><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span><span class="ml-2 text-[10px] text-brand-300">TechScreen — Always On Top</span></div>
+                <div class="p-3 code-line text-[10px] text-gray-300">
+                  <div><span class="text-pink-400">def</span> two_sum(nums, target):</div>
+                  <div class="pl-3">seen = {}</div>
+                  <div class="pl-3"><span class="text-pink-400">for</span> i, n <span class="text-pink-400">in</span> enumerate(nums):</div>
+                  <div class="pl-6">d = target - n</div>
+                  <div class="pl-6"><span class="text-pink-400">if</span> d <span class="text-pink-400">in</span> seen: <span class="text-pink-400">return</span> [seen[d], i]</div>
+                  <div class="pl-6">seen[n] = i</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="icon-tile mb-4">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="10" rx="2" stroke="currentColor" stroke-width="1.8"/><rect x="8" y="14" width="8" height="6" rx="1" stroke="currentColor" stroke-width="1.8"/></svg>
+        </div>
+        <h3 class="text-3xl font-bold text-brand-400">Always On Top</h3>
+        <p class="mt-3 text-gray-300 max-w-md">Keep the app floating above all other windows at all times. Whether you're in a browser, IDE, or video call — your answers are always one glance away.</p>
+      </div>
+    </div>
+
+    <!-- Feature 3: Lightning-Fast Shortcuts -->
+    <div class="mt-20 grid md:grid-cols-2 gap-10 items-center">
+      <div class="order-2 md:order-1">
+        <div class="icon-tile mb-4">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M7 10h.01M11 10h.01M15 10h.01M7 14h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        <h3 class="text-3xl font-bold text-brand-400">Lightning-Fast Shortcuts</h3>
+        <p class="mt-3 text-gray-300 max-w-md">Control everything with keyboard shortcuts. Instantly show, hide, or move the window without touching your mouse — stay focused and undetected.</p>
+        <div class="mt-5 flex flex-wrap gap-2">
+          <span class="tag-chip">⌘ + 2 Make screenshot</span>
+          <span class="tag-chip">⌘ + H Hide window</span>
+          <span class="tag-chip">⌘ + ↑ Move up</span>
+          <span class="tag-chip">⌘ + ↵ Solve</span>
+        </div>
+      </div>
+      <div class="order-1 md:order-2">
+        <div class="card p-3">
+          <div class="mock">
+            <div class="mock-titlebar">
+              <span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span>
+              <span class="ml-2 text-[10px] text-brand-300">TechScreen</span>
+            </div>
+            <div class="aspect-[16/9] p-4 text-[11px] text-gray-400 relative">
+              <div class="text-gray-500">Waiting for screenshot/conversation</div>
+              <div class="absolute right-6 top-1/2 -translate-y-1/2 flex flex-col items-center gap-2">
+                <span class="tag-chip text-brand-300 border-brand-500/40">Make screenshot</span>
+                <span class="px-3 py-1 rounded-md font-mono text-xs text-black" style="background:linear-gradient(180deg,#34d399,#059669);">⌘ +2</span>
+              </div>
+              <div class="absolute left-6 bottom-6 flex gap-3">
+                <span class="w-7 h-7 rounded-md flex items-center justify-center text-xs text-gray-300" style="background:#1a1a1a;border:1px solid rgba(255,255,255,0.1)">3</span>
+                <span class="w-7 h-7 rounded-md flex items-center justify-center text-xs text-gray-300" style="background:#1a1a1a;border:1px solid rgba(255,255,255,0.1)">4</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 4: Conversation Mode -->
+    <div class="mt-20 grid md:grid-cols-2 gap-10 items-center">
+      <div>
+        <div class="card p-3">
+          <div class="mock">
+            <div class="mock-titlebar">
+              <span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span>
+              <span class="ml-2 text-[10px] text-gray-400">Conversation mode · Listening</span>
+            </div>
+            <div class="aspect-[16/9] relative" style="background: linear-gradient(135deg,#1a0f08,#0a0a0a);">
+              <div class="absolute inset-0 flex items-center justify-center">
+                <div class="w-32 h-32 rounded-full" style="background: radial-gradient(circle at 50% 40%, #c9a987, #6b4a35);"></div>
+              </div>
+              <div class="absolute left-4 right-4 bottom-4 mock">
+                <div class="p-3 flex items-center gap-3">
+                  <div class="flex gap-1">
+                    <span class="w-1 h-3 rounded-sm bg-brand-400 animate-pulse"></span>
+                    <span class="w-1 h-5 rounded-sm bg-brand-400 animate-pulse" style="animation-delay:.1s"></span>
+                    <span class="w-1 h-7 rounded-sm bg-brand-400 animate-pulse" style="animation-delay:.2s"></span>
+                    <span class="w-1 h-4 rounded-sm bg-brand-400 animate-pulse" style="animation-delay:.3s"></span>
+                    <span class="w-1 h-6 rounded-sm bg-brand-400 animate-pulse" style="animation-delay:.4s"></span>
+                  </div>
+                  <span class="text-xs text-gray-300">Listening for question…</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="icon-tile mb-4">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 12h2M19 12h2M7 8v8M11 5v14M15 8v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        <h3 class="text-3xl font-bold text-brand-400">Conversation Mode</h3>
+        <p class="mt-3 text-gray-300 max-w-md">Listens to your system audio in real-time — Zoom, Meet, Teams, you name it. The moment a question is asked, you get an instant, accurate response ready to deliver.</p>
+      </div>
+    </div>
+
+    <!-- Feature 5: Highly Customizable -->
+    <div class="mt-20 grid md:grid-cols-2 gap-10 items-center">
+      <div class="order-2 md:order-1">
+        <div class="icon-tile mb-4">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z" stroke="currentColor" stroke-width="1.6"/></svg>
+        </div>
+        <h3 class="text-3xl font-bold text-brand-400">Highly Customizable</h3>
+        <p class="mt-3 text-gray-300 max-w-md">Tailor the experience to your needs — add custom prompts, choose your programming language and verbal language, and select your interview type whether it's SWE, PM, or anything else.</p>
+      </div>
+      <div class="order-1 md:order-2">
+        <div class="card p-3">
+          <div class="mock">
+            <div class="mock-titlebar">
+              <span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span>
+              <span class="ml-2 text-[10px] text-gray-400">Settings</span>
+            </div>
+            <div class="p-4 grid grid-cols-2 gap-3 text-[11px]">
+              <div>
+                <div class="text-gray-500 mb-1">Programming</div>
+                <div class="rounded-md p-2" style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.08)">Python</div>
+              </div>
+              <div>
+                <div class="text-gray-500 mb-1">Language</div>
+                <div class="rounded-md p-2" style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.08)">English</div>
+              </div>
+              <div>
+                <div class="text-gray-500 mb-1">Interview type</div>
+                <div class="rounded-md p-2 text-brand-300" style="background:#0e0e0e;border:1px solid rgba(16,185,129,0.30)">SWE</div>
+              </div>
+              <div>
+                <div class="text-gray-500 mb-1">Model</div>
+                <div class="rounded-md p-2" style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.08)">Reasoning · Pro</div>
+              </div>
+              <div class="col-span-2">
+                <div class="text-gray-500 mb-1">Custom prompt</div>
+                <div class="rounded-md p-2 leading-relaxed" style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.08)">Provide concise responses, explain trade-offs, and include time/space complexity.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 80% stat -->
+    <div class="mt-24 card-strong p-8 text-center">
+      <h3 class="text-2xl sm:text-3xl font-extrabold">
+        Delivered an average <span class="text-brand-400">80% increase</span><br class="hidden sm:block"/> in interview success
+      </h3>
+    </div>
+  </section>
+
+  <!-- Comparison -->
+  <section class="relative max-w-[1240px] mx-auto px-4 sm:px-6 mt-32">
+    <h2 class="text-center text-4xl sm:text-5xl font-extrabold tracking-tight">
+      Results<br/>
+      <span class="text-brand-400">Others Can't Reach</span>
+    </h2>
+    <p class="mt-4 text-center text-gray-400">See how Tech Screen stacks up against the competition</p>
+
+    <div class="mt-12 card overflow-hidden">
+      <div class="grid grid-cols-5 px-5 py-4 text-xs uppercase tracking-wider text-gray-400 bg-white/5">
+        <div class="col-span-1">Features</div>
+        <div class="text-center font-semibold text-brand-300">TechScreen</div>
+        <div class="text-center">Competitor A</div>
+        <div class="text-center">Competitor B</div>
+        <div class="text-center">Competitor C</div>
+      </div>
+
+      <div class="divide-y divide-white/5">
+        <!-- row template -->
+        <div class="table-row grid grid-cols-5 items-start px-5 py-4 text-sm">
+          <div class="col-span-1">
+            <div class="font-semibold">Screen Share Invisibility</div>
+            <div class="text-xs text-gray-500 mt-1">App stays hidden during screen sharing.</div>
+          </div>
+          <div class="text-center"><svg class="check-yes inline" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="text-center"><span class="check-no">—</span></div>
+          <div class="text-center"><span class="check-no">—</span></div>
+          <div class="text-center"><span class="check-no">—</span></div>
+        </div>
+        <div class="table-row grid grid-cols-5 items-start px-5 py-4 text-sm">
+          <div class="col-span-1">
+            <div class="font-semibold">Invisible in Tray and Dock</div>
+            <div class="text-xs text-gray-500 mt-1">No visible app icon. Zero traces.</div>
+          </div>
+          <div class="text-center"><svg class="check-yes inline" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="text-center"><span class="check-no">—</span></div>
+          <div class="text-center"><svg class="check-yes inline" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="text-center"><span class="check-no">—</span></div>
+        </div>
+        <div class="table-row grid grid-cols-5 items-start px-5 py-4 text-sm">
+          <div class="col-span-1">
+            <div class="font-semibold">Affordable pricing</div>
+            <div class="text-xs text-gray-500 mt-1">Simple, transparent. No $1000+ plans.</div>
+          </div>
+          <div class="text-center"><svg class="check-yes inline" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="text-center"><span class="check-no">—</span></div>
+          <div class="text-center"><span class="check-no">—</span></div>
+          <div class="text-center"><span class="check-no">—</span></div>
+        </div>
+        <div class="table-row grid grid-cols-5 items-start px-5 py-4 text-sm">
+          <div class="col-span-1">
+            <div class="font-semibold">Free trial</div>
+            <div class="text-xs text-gray-500 mt-1">Try before you buy. No credit card.</div>
+          </div>
+          <div class="text-center"><svg class="check-yes inline" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="text-center"><span class="check-no">—</span></div>
+          <div class="text-center"><svg class="check-yes inline" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="text-center"><span class="check-no">—</span></div>
+        </div>
+        <div class="table-row grid grid-cols-5 items-start px-5 py-4 text-sm">
+          <div class="col-span-1">
+            <div class="font-semibold">Latest AI models</div>
+            <div class="text-xs text-gray-500 mt-1">Cutting-edge reasoning models.</div>
+          </div>
+          <div class="text-center"><svg class="check-yes inline" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="text-center"><svg class="check-yes inline" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="text-center"><span class="check-no">—</span></div>
+          <div class="text-center"><span class="check-no">—</span></div>
+        </div>
+        <div class="table-row grid grid-cols-5 items-start px-5 py-4 text-sm">
+          <div class="col-span-1">
+            <div class="font-semibold">Works with ANY type of interview</div>
+            <div class="text-xs text-gray-500 mt-1">Beyond software engineering.</div>
+          </div>
+          <div class="text-center"><svg class="check-yes inline" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="text-center"><span class="check-no">—</span></div>
+          <div class="text-center"><span class="check-no">—</span></div>
+          <div class="text-center"><span class="check-no">—</span></div>
+        </div>
+        <div class="table-row grid grid-cols-5 items-start px-5 py-4 text-sm">
+          <div class="col-span-1">
+            <div class="font-semibold">Zero Detection Incidents</div>
+            <div class="text-xs text-gray-500 mt-1">Track record speaks for itself.</div>
+          </div>
+          <div class="text-center"><svg class="check-yes inline" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="text-center"><span class="check-no">—</span></div>
+          <div class="text-center"><span class="check-no">—</span></div>
+          <div class="text-center"><span class="check-no">—</span></div>
+        </div>
+        <div class="table-row grid grid-cols-5 items-start px-5 py-4 text-sm">
+          <div class="col-span-1">
+            <div class="font-semibold">Perfect interface</div>
+            <div class="text-xs text-gray-500 mt-1">Clean, intuitive design.</div>
+          </div>
+          <div class="text-center"><svg class="check-yes inline" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="text-center"><svg class="check-yes inline" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="text-center"><span class="check-no">—</span></div>
+          <div class="text-center"><svg class="check-yes inline" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing teaser -->
+  <section id="pricing" class="relative max-w-[1240px] mx-auto px-4 sm:px-6 mt-32">
+    <h2 class="text-center text-4xl sm:text-5xl font-extrabold tracking-tight">
+      Choose Your <span class="text-brand-400">Plan</span>
+    </h2>
+    <p class="mt-3 text-center text-gray-400">Choose the plan that fits your interview preparation needs. Cancel or change anytime.</p>
+
+    <div class="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="card p-6">
+        <div class="text-[10px] tracking-widest text-gray-500 uppercase">TechScreen Basic</div>
+        <h3 class="text-2xl font-bold mt-1">Free</h3>
+        <p class="text-xs text-gray-400 mt-1">Get started with basic interview assistance</p>
+        <div class="mt-5 text-3xl font-extrabold">$0<span class="text-sm font-medium text-gray-400">/ month</span></div>
+        <a href="./register.html" class="mt-5 block btn-ghost text-sm px-4 py-2 text-center">Get started</a>
+        <ul class="mt-5 text-sm space-y-2 text-gray-300">
+          <li class="flex gap-2"><span class="text-brand-400">✓</span>3 test tokens</li>
+          <li class="flex gap-2"><span class="text-brand-400">✓</span>60 seconds of audio mode</li>
+          <li class="flex gap-2"><span class="text-brand-400">✓</span>Basic email support</li>
+        </ul>
+      </div>
+
+      <div class="card p-6">
+        <div class="text-[10px] tracking-widest text-gray-500 uppercase">TechScreen Full</div>
+        <h3 class="text-2xl font-bold mt-1">Essential</h3>
+        <p class="text-xs text-gray-400 mt-1">Ideal if you have 1-2 interviews / month.</p>
+        <div class="mt-5 text-3xl font-extrabold">$32<span class="text-sm font-medium text-gray-400">/ month</span></div>
+        <a href="./register.html?plan=essential" class="mt-5 block btn-ghost text-sm px-4 py-2 text-center">Choose Essential</a>
+        <ul class="mt-5 text-sm space-y-2 text-gray-300">
+          <li class="flex gap-2"><span class="text-brand-400">✓</span>150 tokens / 3 months</li>
+          <li class="flex gap-2"><span class="text-brand-400">✓</span>1.5 hours of conversation</li>
+          <li class="flex gap-2"><span class="text-brand-400">✓</span>Setup assistance</li>
+          <li class="flex gap-2"><span class="text-brand-400">✓</span>Email support</li>
+        </ul>
+      </div>
+
+      <div class="card-strong p-6 relative">
+        <span class="absolute -top-3 right-5 text-[10px] tracking-widest uppercase font-bold px-2 py-1 rounded-full" style="background:linear-gradient(180deg,#34d399,#059669);color:#03150d;">Best Deal</span>
+        <div class="text-[10px] tracking-widest text-brand-300 uppercase">TechScreen Full</div>
+        <h3 class="text-2xl font-bold mt-1 text-brand-300">Professional</h3>
+        <p class="text-xs text-gray-300 mt-1">Ideal if you have 3-10 interviews / month.</p>
+        <div class="mt-5 text-3xl font-extrabold">$47<span class="text-sm font-medium text-gray-400">/ month</span></div>
+        <a href="./register.html?plan=professional" class="mt-5 block btn-primary text-sm px-4 py-2 text-center">Choose Professional</a>
+        <ul class="mt-5 text-sm space-y-2 text-gray-200">
+          <li class="flex gap-2"><span class="text-brand-300">✓</span>480 tokens / 3 months</li>
+          <li class="flex gap-2"><span class="text-brand-300">✓</span>9 hours of conversation</li>
+          <li class="flex gap-2"><span class="text-brand-300">✓</span>Priority support</li>
+          <li class="flex gap-2"><span class="text-brand-300">✓</span>Higher limits</li>
+        </ul>
+      </div>
+
+      <div class="card p-6">
+        <div class="text-[10px] tracking-widest text-gray-500 uppercase">TechScreen Full</div>
+        <h3 class="text-2xl font-bold mt-1">Expert</h3>
+        <p class="text-xs text-gray-400 mt-1">Ideal if you have 11-20 interviews / month.</p>
+        <div class="mt-5 text-3xl font-extrabold">$80<span class="text-sm font-medium text-gray-400">/ month</span></div>
+        <a href="./register.html?plan=expert" class="mt-5 block btn-ghost text-sm px-4 py-2 text-center">Choose Expert</a>
+        <ul class="mt-5 text-sm space-y-2 text-gray-300">
+          <li class="flex gap-2"><span class="text-brand-400">✓</span>1.5K tokens / 3 months</li>
+          <li class="flex gap-2"><span class="text-brand-400">✓</span>27 hours of conversation</li>
+          <li class="flex gap-2"><span class="text-brand-400">✓</span>Highest limits</li>
+          <li class="flex gap-2"><span class="text-brand-400">✓</span>Fastest AI responses</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="relative max-w-[860px] mx-auto px-4 sm:px-6 mt-32">
+    <h2 class="text-center text-4xl sm:text-5xl font-extrabold tracking-tight">
+      Frequently Asked <span class="text-brand-400">Questions</span>
+    </h2>
+    <p class="mt-3 text-center text-gray-400">Everything you need to know about Tech Screen</p>
+
+    <div class="mt-10 space-y-3">
+      <details class="card p-5" open>
+        <summary class="flex items-center justify-between font-semibold">
+          What is Tech Screen?
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </summary>
+        <p class="mt-3 text-sm text-gray-400">Tech Screen is an AI-powered tool that helps you navigate technical interviews by providing real-time assistance. It works seamlessly in the background, ensuring you stay confident and perform at your best.</p>
+      </details>
+      <details class="card p-5">
+        <summary class="flex items-center justify-between font-semibold">
+          What input types does Tech Screen support?
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </summary>
+        <ul class="mt-3 text-sm text-gray-400 list-disc pl-5 space-y-1">
+          <li>Computer audio (conversation mode)</li>
+          <li>Up to 7 screenshots</li>
+        </ul>
+      </details>
+      <details class="card p-5">
+        <summary class="flex items-center justify-between font-semibold">
+          Is Tech Screen visible during screen sharing or recordings?
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </summary>
+        <p class="mt-3 text-sm text-gray-400">No. Tech Screen is completely invisible to screen-sharing software, screenshots, and recordings on platforms like Zoom, Google Meet, HackerRank, and CoderPad.</p>
+      </details>
+      <details class="card p-5">
+        <summary class="flex items-center justify-between font-semibold">
+          How fast are the responses?
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </summary>
+        <p class="mt-3 text-sm text-gray-400">Tech Screen delivers instant and accurate responses, ensuring you get real-time assistance without delays.</p>
+      </details>
+      <details class="card p-5">
+        <summary class="flex items-center justify-between font-semibold">
+          How much does Tech Screen cost?
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </summary>
+        <p class="mt-3 text-sm text-gray-400">We offer flexible pricing plans tailored to different needs. Check our pricing page for details on free trials and premium features.</p>
+      </details>
+      <details class="card p-5">
+        <summary class="flex items-center justify-between font-semibold">
+          How do I get started?
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </summary>
+        <p class="mt-3 text-sm text-gray-400">Simply sign up, install Tech Screen, and start using it instantly — no complex setup required.</p>
+      </details>
+    </div>
+
+    <div class="text-center mt-10">
+      <a href="./register.html" class="btn-primary inline-flex items-center gap-2 px-5 py-3">
+        Get Started For Free
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section id="cta" class="relative max-w-[1240px] mx-auto px-4 sm:px-6 mt-32">
+    <div class="frame relative overflow-hidden p-10 sm:p-16 text-center">
+      <div class="absolute inset-0 glow-green pointer-events-none"></div>
+      <div class="absolute inset-0 grid-bg opacity-30 pointer-events-none"></div>
+      <div class="relative z-10">
+        <h2 class="display text-5xl sm:text-7xl font-black">ACE Your Next Interview</h2>
+        <p class="mt-4 text-gray-300">Get fast and accurate AI responses when you need them the most</p>
+        <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <a href="./register.html" class="btn-primary px-5 py-3 inline-flex items-center gap-2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16.365 1.43c0 1.14-.43 2.22-1.13 3.02-.78.91-2.04 1.6-3.07 1.52-.13-1.12.42-2.27 1.1-3.02.79-.92 2.13-1.59 3.1-1.52zM20.5 17.27c-.5 1.16-.74 1.68-1.39 2.71-.91 1.43-2.19 3.21-3.79 3.22-1.42.01-1.78-.93-3.71-.92-1.93.01-2.33.94-3.75.92-1.6-.02-2.81-1.62-3.72-3.05C1.61 16.93.86 13.04 2.45 10.4c1.14-1.89 2.94-3.07 4.86-3.07 1.49 0 2.94.74 3.71.74.78 0 2.66-.92 4.36-.78.7.03 2.66.28 3.93 2.13-3.45 1.93-2.88 6.86 1.19 7.85z"/></svg>
+            Get For Mac
+          </a>
+          <a href="./register.html" class="btn-ghost px-5 py-3 inline-flex items-center gap-2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.4l8.4-1.2v8.4H3V5.4zM12.6 4l8.4-1.2V13H12.6V4zM3 13.8h8.4v8.4L3 21V13.8zM12.6 14H21v9l-8.4-1.2V14z"/></svg>
+            Get For Windows
+          </a>
+        </div>
+        <div class="mt-6 flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs text-gray-400">
+          <span>No credit card required</span>
+          <span>Setup in under 2 minutes</span>
+          <span>100% undetectable</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="relative max-w-[1240px] mx-auto px-4 sm:px-6 mt-24 mb-16">
+    <div class="grid md:grid-cols-4 gap-10 pt-10 border-t border-white/5">
+      <div>
+        <a href="./index.html" class="flex items-center gap-2.5">
+          <span class="w-8 h-8 rounded-lg flex items-center justify-center font-black text-black" style="background:linear-gradient(180deg,#34d399,#059669);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 6.5L4 17.5L12 22L20 17.5L20 6.5L12 2L4 6.5Z" stroke="black" stroke-width="2" stroke-linejoin="round"/><path d="M9 11L11 13L15 9" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span class="font-semibold tracking-tight">Tech Screen</span>
+        </a>
+        <p class="mt-4 text-sm text-gray-400 max-w-xs">Your invisible AI interview assistant. Get real-time help during technical interviews while staying completely undetected.</p>
+      </div>
+      <div>
+        <h4 class="text-xs uppercase tracking-widest text-gray-500 font-semibold">Product</h4>
+        <ul class="mt-4 space-y-2 text-sm text-gray-300">
+          <li><a href="./pricing.html" class="hover:text-white">Pricing</a></li>
+          <li><a href="./index.html#faq" class="hover:text-white">FAQ</a></li>
+          <li><a href="./index.html#features" class="hover:text-white">Features</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-xs uppercase tracking-widest text-gray-500 font-semibold">Legal</h4>
+        <ul class="mt-4 space-y-2 text-sm text-gray-300">
+          <li><a href="#" class="hover:text-white">Policies</a></li>
+          <li><a href="#" class="hover:text-white">User Agreement</a></li>
+          <li><a href="#" class="hover:text-white">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-xs uppercase tracking-widest text-gray-500 font-semibold">Account</h4>
+        <ul class="mt-4 space-y-2 text-sm text-gray-300">
+          <li><a href="./login.html" class="hover:text-white">Log In</a></li>
+          <li><a href="./register.html" class="hover:text-white">Sign Up</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-10 text-xs text-gray-500 text-center">© 2026 Tech Screen. All rights reserved.</div>
+  </footer>
+</div>
+
+<script>
+  // Auth-aware nav: swap "Log In / Get Started" for "Dashboard / Logout" when token present.
+  document.addEventListener("DOMContentLoaded", () => {
+    if (!window.TechScreenAPI || !TechScreenAPI.isLoggedIn()) return;
+    const navLogin = document.getElementById("nav-login");
+    const navCta = document.getElementById("nav-cta");
+    if (navLogin) {
+      navLogin.textContent = "Logout";
+      navLogin.href = "#";
+      navLogin.addEventListener("click", (e) => {
+        e.preventDefault();
+        TechScreenAPI.logout();
+        location.reload();
+      });
+    }
+    if (navCta) {
+      navCta.href = "./dashboard.html";
+      navCta.firstChild && (navCta.firstChild.textContent = "Dashboard ");
+    }
+  });
+</script>
+</body>
+</html>

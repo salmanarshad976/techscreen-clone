@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dashboard · Tech Screen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="./assets/app.css">
+<script src="./assets/api.js" defer></script>
+<script>
+  tailwind.config = {
+    theme: { extend: { colors: { brand: { 300: '#6ee7b7', 400: '#34d399', 500: '#10b981', 600: '#059669' } } } }
+  };
+</script>
+</head>
+<body class="overflow-x-hidden">
+
+<div class="relative max-w-[1240px] mx-auto px-4 sm:px-6 pt-6">
+  <div class="frame relative overflow-hidden">
+    <div class="absolute inset-0 glow-green pointer-events-none"></div>
+    <div class="absolute inset-0 grid-bg opacity-40 pointer-events-none"></div>
+
+    <nav class="relative z-10 flex items-center justify-between px-6 sm:px-8 py-5">
+      <a href="./index.html" class="flex items-center gap-2.5">
+        <span class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: linear-gradient(180deg,#34d399,#059669); box-shadow: 0 6px 20px rgba(16,185,129,0.35);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 6.5L4 17.5L12 22L20 17.5L20 6.5L12 2L4 6.5Z" stroke="black" stroke-width="2" stroke-linejoin="round"/><path d="M9 11L11 13L15 9" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="font-semibold tracking-tight">TechScreen</span>
+      </a>
+      <div class="hidden md:flex items-center gap-8 text-sm text-gray-300">
+        <a href="./index.html" class="hover:text-white">Home</a>
+        <a href="./pricing.html" class="hover:text-white">Pricing</a>
+        <a href="./dashboard.html" class="text-white font-semibold">Dashboard</a>
+      </div>
+      <button id="logout-btn" class="btn-ghost text-sm px-4 py-2 inline-flex items-center gap-2">Logout</button>
+    </nav>
+
+    <section class="relative z-10 px-6 sm:px-8 py-12">
+      <div id="loading" class="text-center text-gray-400 py-16">Loading your dashboard…</div>
+
+      <div id="content" class="hidden">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div>
+            <p class="text-sm text-gray-400">Welcome back</p>
+            <h1 class="display text-3xl sm:text-4xl font-black text-white mt-1" id="user-name">—</h1>
+            <p class="text-sm text-gray-400 mt-1" id="user-email">—</p>
+          </div>
+          <div class="card-strong px-5 py-3">
+            <p class="text-[10px] uppercase tracking-widest text-brand-300">Current Plan</p>
+            <p class="text-2xl font-bold capitalize" id="plan-name">basic</p>
+          </div>
+        </div>
+
+        <div class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="card p-6">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-xs uppercase tracking-widest text-gray-500">Tokens Remaining</p>
+                <p class="text-3xl font-extrabold mt-1"><span id="tokens-remaining">0</span><span class="text-sm font-medium text-gray-500"> / <span id="tokens-limit">0</span></span></p>
+              </div>
+              <div class="icon-tile">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M8 12h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              </div>
+            </div>
+            <div class="usage-bar mt-4"><div class="usage-fill" id="tokens-bar" style="width:0%"></div></div>
+            <p class="mt-2 text-xs text-gray-500"><span id="tokens-used">0</span> used this period</p>
+            <button id="consume-btn" class="btn-ghost mt-5 px-4 py-2 text-sm">Use 1 Token (demo)</button>
+            <p id="consume-msg" class="mt-2 text-xs hidden"></p>
+          </div>
+
+          <div class="card p-6">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-xs uppercase tracking-widest text-gray-500">Audio Seconds Remaining</p>
+                <p class="text-3xl font-extrabold mt-1"><span id="audio-remaining">0</span><span class="text-sm font-medium text-gray-500"> / <span id="audio-limit">0</span></span></p>
+              </div>
+              <div class="icon-tile">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 12h2M19 12h2M7 8v8M11 5v14M15 8v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              </div>
+            </div>
+            <div class="usage-bar mt-4"><div class="usage-fill" id="audio-bar" style="width:0%"></div></div>
+            <p class="mt-2 text-xs text-gray-500"><span id="audio-used">0</span>s used this period</p>
+          </div>
+        </div>
+
+        <div class="mt-8 card p-6">
+          <h2 class="text-lg font-bold">Account</h2>
+          <dl class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+            <div>
+              <dt class="text-gray-500 text-xs uppercase tracking-widest">Email</dt>
+              <dd class="mt-1" id="acct-email">—</dd>
+            </div>
+            <div>
+              <dt class="text-gray-500 text-xs uppercase tracking-widest">Member since</dt>
+              <dd class="mt-1" id="acct-created">—</dd>
+            </div>
+            <div>
+              <dt class="text-gray-500 text-xs uppercase tracking-widest">User ID</dt>
+              <dd class="mt-1 font-mono text-xs" id="acct-id">—</dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="mt-8 card-strong p-6 text-center">
+          <h2 class="text-lg font-bold">Need more tokens?</h2>
+          <p class="mt-1 text-sm text-gray-300">Upgrade to Essential, Professional, or Expert.</p>
+          <a href="./pricing.html" class="btn-primary inline-flex items-center gap-2 px-5 py-2.5 mt-4 text-sm">
+            View Plans
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script>
+  function pct(used, total) {
+    if (!total) return 0;
+    return Math.max(0, Math.min(100, Math.round((used / total) * 100)));
+  }
+
+  async function loadDashboard() {
+    try {
+      const data = await TechScreenAPI.dashboard();
+      const u = data.user;
+      document.getElementById("user-name").textContent = u.full_name || u.email.split("@")[0];
+      document.getElementById("user-email").textContent = u.email;
+      document.getElementById("plan-name").textContent = u.plan;
+      document.getElementById("tokens-remaining").textContent = u.tokens_remaining;
+      document.getElementById("tokens-limit").textContent = data.plan_limits.tokens;
+      document.getElementById("tokens-used").textContent = data.tokens_used_this_month;
+      document.getElementById("tokens-bar").style.width = pct(data.tokens_used_this_month, data.plan_limits.tokens) + "%";
+      document.getElementById("audio-remaining").textContent = u.audio_seconds_remaining;
+      document.getElementById("audio-limit").textContent = data.plan_limits.audio_seconds;
+      document.getElementById("audio-used").textContent = data.audio_seconds_used_this_month;
+      document.getElementById("audio-bar").style.width = pct(data.audio_seconds_used_this_month, data.plan_limits.audio_seconds) + "%";
+      document.getElementById("acct-email").textContent = u.email;
+      document.getElementById("acct-created").textContent = new Date(u.created_at).toLocaleDateString();
+      document.getElementById("acct-id").textContent = "#" + u.id;
+      document.getElementById("loading").classList.add("hidden");
+      document.getElementById("content").classList.remove("hidden");
+    } catch (err) {
+      if (/401|not authenticated|invalid token/i.test(err.message)) {
+        TechScreenAPI.logout();
+        location.replace("./login.html");
+        return;
+      }
+      document.getElementById("loading").textContent = "Failed to load: " + err.message;
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    if (!TechScreenAPI.isLoggedIn()) {
+      location.replace("./login.html");
+      return;
+    }
+    loadDashboard();
+
+    document.getElementById("logout-btn").addEventListener("click", () => {
+      TechScreenAPI.logout();
+      location.assign("./index.html");
+    });
+
+    document.getElementById("consume-btn").addEventListener("click", async (e) => {
+      e.preventDefault();
+      const btn = e.currentTarget;
+      const msg = document.getElementById("consume-msg");
+      msg.classList.add("hidden");
+      btn.disabled = true;
+      try {
+        await TechScreenAPI.consumeToken();
+        await loadDashboard();
+        msg.textContent = "Token consumed.";
+        msg.className = "mt-2 text-xs text-brand-300";
+        msg.classList.remove("hidden");
+      } catch (err) {
+        msg.textContent = err.message;
+        msg.className = "mt-2 text-xs text-red-400";
+        msg.classList.remove("hidden");
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  });
+</script>
+</body>
+</html>

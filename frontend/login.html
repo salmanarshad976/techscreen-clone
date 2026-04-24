@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Log In · Tech Screen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="./assets/app.css">
+<script src="./assets/api.js" defer></script>
+<script>
+  tailwind.config = {
+    theme: { extend: { colors: { brand: { 300: '#6ee7b7', 400: '#34d399', 500: '#10b981', 600: '#059669' } } } }
+  };
+</script>
+</head>
+<body class="overflow-x-hidden">
+
+<div class="relative max-w-[1240px] mx-auto px-4 sm:px-6 pt-6">
+  <div class="frame relative overflow-hidden">
+    <div class="absolute inset-0 glow-green pointer-events-none"></div>
+    <div class="absolute inset-0 grid-bg opacity-40 pointer-events-none"></div>
+
+    <nav class="relative z-10 flex items-center justify-between px-6 sm:px-8 py-5">
+      <a href="./index.html" class="flex items-center gap-2.5">
+        <span class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: linear-gradient(180deg,#34d399,#059669); box-shadow: 0 6px 20px rgba(16,185,129,0.35);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 6.5L4 17.5L12 22L20 17.5L20 6.5L12 2L4 6.5Z" stroke="black" stroke-width="2" stroke-linejoin="round"/><path d="M9 11L11 13L15 9" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="font-semibold tracking-tight">TechScreen</span>
+      </a>
+      <div class="hidden md:flex items-center gap-8 text-sm text-gray-300">
+        <a href="./index.html" class="hover:text-white">Home</a>
+        <a href="./pricing.html" class="hover:text-white">Pricing</a>
+        <a href="./index.html#faq" class="hover:text-white">FAQ</a>
+      </div>
+      <a href="./register.html" class="btn-primary text-sm px-4 py-2 inline-flex items-center gap-2">Sign Up</a>
+    </nav>
+
+    <section class="relative z-10 px-6 sm:px-8 py-16">
+      <div class="max-w-md mx-auto card p-8">
+        <h1 class="display text-3xl font-black text-white">Welcome back</h1>
+        <p class="mt-2 text-sm text-gray-400">Log in to access your dashboard.</p>
+
+        <form id="login-form" class="mt-6 space-y-4" novalidate>
+          <div id="error-box" class="alert-error hidden"></div>
+          <div>
+            <label class="label" for="email">Email</label>
+            <input class="input mt-1" id="email" name="email" type="email" autocomplete="email" required />
+          </div>
+          <div>
+            <label class="label" for="password">Password</label>
+            <input class="input mt-1" id="password" name="password" type="password" autocomplete="current-password" required minlength="8" />
+          </div>
+          <button id="submit-btn" type="submit" class="btn-primary w-full px-4 py-3 inline-flex items-center justify-center gap-2">
+            Log In
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </form>
+
+        <p class="mt-5 text-sm text-gray-400 text-center">
+          New to Tech Screen?
+          <a href="./register.html" class="text-brand-300 font-semibold hover:underline">Create an account</a>
+        </p>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    if (TechScreenAPI.isLoggedIn()) {
+      location.replace("./dashboard.html");
+      return;
+    }
+    const form = document.getElementById("login-form");
+    const errorBox = document.getElementById("error-box");
+    const submitBtn = document.getElementById("submit-btn");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      errorBox.classList.add("hidden");
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Signing in…";
+      try {
+        const data = await TechScreenAPI.login(
+          document.getElementById("email").value.trim(),
+          document.getElementById("password").value,
+        );
+        TechScreenAPI.setToken(data.access_token);
+        location.assign("./dashboard.html");
+      } catch (err) {
+        errorBox.textContent = err.message;
+        errorBox.classList.remove("hidden");
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Log In";
+      }
+    });
+  });
+</script>
+</body>
+</html>
