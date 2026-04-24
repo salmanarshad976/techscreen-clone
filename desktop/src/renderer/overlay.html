@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https: http://127.0.0.1:* http://localhost:*; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com" />
+    <title>Tech Screen Overlay</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="overlay">
+    <div class="overlay-shell">
+      <div class="overlay-header">
+        <span class="dot idle" id="status-dot"></span>
+        <span class="display title">TECH SCREEN</span>
+        <span class="muted" id="tokens-label" style="font-size:11px;"></span>
+        <span class="spacer"></span>
+        <button class="btn small ghost" id="btn-solve" title="Solve (Ctrl/Cmd+Shift+Enter)">
+          Solve
+        </button>
+        <button class="btn small ghost" id="btn-clickthrough" title="Toggle click-through (Ctrl/Cmd+Shift+M)">
+          Click: through
+        </button>
+        <button class="btn small ghost" id="btn-hide" title="Hide (Ctrl/Cmd+Shift+Space)">
+          Hide
+        </button>
+      </div>
+      <div class="overlay-body" id="body">
+        <p class="muted">
+          Press <span class="kbd">Ctrl/Cmd+Shift+Enter</span> or click
+          <strong>Solve</strong> to capture your screen and ask the model. The
+          overlay auto-hides during capture so it isn't in the screenshot, and
+          (where supported) is invisible to screen-sharing tools.
+        </p>
+        <p class="muted">
+          <span class="kbd">Ctrl/Cmd+Shift+M</span> toggles click-through so you
+          can scroll/select inside this panel.
+          <span class="kbd">Ctrl/Cmd+Shift+Space</span> shows/hides the overlay.
+        </p>
+      </div>
+      <div class="overlay-footer">
+        <span id="status-text">Idle</span>
+        <span class="right">
+          <button class="btn small ghost" id="btn-logout">Logout</button>
+        </span>
+      </div>
+    </div>
+
+    <script src="overlay.js"></script>
+  </body>
+</html>

@@ -17,6 +17,7 @@ from app.auth import (
 )
 from app.db import get_db, init_db
 from app.models import User
+from app.solver import solve_screenshot
 
 PLAN_LIMITS: dict[str, dict[str, int]] = {
     "basic": {"tokens": 3, "audio_seconds": 60},
@@ -126,3 +127,29 @@ def consume_token(
     db.commit()
     db.refresh(current_user)
     return current_user
+
+
+@app.post("/api/solve", response_model=schemas.SolveResponse)
+def solve(
+    payload: schemas.SolveRequest,
+    current_user: Annotated[User, Depends(get_current_user)],
+    db: Annotated[Session, Depends(get_db)],
+) -> schemas.SolveResponse:
+    if current_user.tokens_remaining <= 0:
+        raise HTTPException(status.HTTP_402_PAYMENT_REQUIRED, "No tokens remaining")
+
+    try:
+        result = solve_screenshot(payload.image_base64, payload.prompt)
+    except ValueError as exc:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, str(exc)) from exc
+    except RuntimeError as exc:
+        raise HTTPException(status.HTTP_502_BAD_GATEWAY, str(exc)) from exc
+
+    current_user.tokens_remaining -= 1
+    db.commit()
+    db.refresh(current_user)
+    return schemas.SolveResponse(
+        answer=result.answer,
+        tokens_remaining=current_user.tokens_remaining,
+        used_mock=result.used_mock,
+    )

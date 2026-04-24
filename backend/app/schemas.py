@@ -40,3 +40,14 @@ class DashboardOut(BaseModel):
     tokens_used_this_month: int
     audio_seconds_used_this_month: int
     plan_limits: dict[str, int]
+
+
+class SolveRequest(BaseModel):
+    image_base64: str = Field(min_length=64, description="PNG/JPEG bytes, base64.")
+    prompt: str | None = Field(default=None, max_length=4000)
+
+
+class SolveResponse(BaseModel):
+    answer: str
+    tokens_remaining: int
+    used_mock: bool = False
