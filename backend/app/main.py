@@ -48,6 +48,8 @@ def get_current_user(authorization: str = Header(None), db: Session = Depends(ge
         if not user:
             raise HTTPException(status_code=401, detail="User not found")
         return user
+    except HTTPException:
+        raise
     except Exception:
         raise HTTPException(status_code=401, detail="Invalid token")
 
@@ -199,7 +201,7 @@ def get_search_results(search_id: int, user: User = Depends(get_current_user), d
 # ── Bulk Search ──
 @app.post("/api/bulk-search")
 def bulk_search(req: BulkSearchRequest, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
-    if user.searches_used + len(req.cities) > user.searches_limit:
+    if user.searches_used + min(len(req.cities), 10) > user.searches_limit:
         raise HTTPException(status_code=403, detail="Not enough searches remaining.")
     all_results = []
     for city in req.cities[:10]:
@@ -305,6 +307,8 @@ def save_lead(lead_id: int, user: User = Depends(get_current_user), db: Session 
     lead = db.query(Lead).filter(Lead.id == lead_id, Lead.user_id == user.id).first()
     if not lead:
         raise HTTPException(status_code=404, detail="Lead not found")
+    if lead.saved:
+        return {"saved": True, "id": lead_id}
     lead.saved = True
     user.saved_leads_count += 1
     db.commit()

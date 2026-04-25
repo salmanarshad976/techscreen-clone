@@ -11,7 +11,7 @@ const api = {
     const headers = { "Content-Type": "application/json", ...opts.headers };
     if (this.token) headers["Authorization"] = `Bearer ${this.token}`;
     const res = await fetch(`${API_BASE}${path}`, { ...opts, headers });
-    if (res.status === 401) { this.logout(); return; }
+    if (res.status === 401 && this.token) { this.logout(); return; }
     if (!res.ok) {
       const err = await res.json().catch(() => ({ detail: "Request failed" }));
       throw new Error(err.detail || "Request failed");
