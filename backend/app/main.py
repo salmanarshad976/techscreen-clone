@@ -31,7 +31,7 @@ CORS_ORIGINS = os.getenv(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -320,6 +320,8 @@ def unsave_lead(lead_id: int, user: User = Depends(get_current_user), db: Sessio
     lead = db.query(Lead).filter(Lead.id == lead_id, Lead.user_id == user.id).first()
     if not lead:
         raise HTTPException(status_code=404, detail="Lead not found")
+    if not lead.saved:
+        return {"saved": False, "id": lead_id}
     lead.saved = False
     user.saved_leads_count = max(0, user.saved_leads_count - 1)
     db.commit()
