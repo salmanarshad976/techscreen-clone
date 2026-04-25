@@ -157,7 +157,7 @@ function renderResults(results) {
         <div class="lead-actions">
           <button class="btn btn-sm btn-primary" onclick="saveLead(${r.id})">${r.saved ? '✓ Saved' : 'Save'}</button>
           <button class="btn btn-sm btn-secondary" onclick="generatePitch(${r.id})">AI Pitch</button>
-          <button class="btn btn-sm btn-secondary" onclick="buildSiteForLead(${JSON.stringify(r.business_name)},${JSON.stringify(r.niche)},${JSON.stringify(r.city + ', ' + r.state)},${JSON.stringify(r.phone || '')})">Build Site</button>
+          <button class="btn btn-sm btn-secondary" onclick="buildSiteForLead(${r.id})">Build Site</button>
           ${r.phone ? `<a class="btn btn-sm btn-ghost" href="https://wa.me/${r.phone.replace(/[^0-9]/g,'')}" target="_blank">WhatsApp</a>` : ''}
           ${r.website ? `<a class="btn btn-sm btn-ghost" href="${r.website}" target="_blank">Website</a>` : ''}
         </div>
@@ -228,12 +228,14 @@ function copyPitch() {
 }
 
 // ── Build Site for Lead ──
-function buildSiteForLead(name, niche, location, phone) {
+function buildSiteForLead(id) {
+  const r = currentResults.find(l => l.id === id);
+  if (!r) return;
   navigate("websites");
-  document.getElementById("webBizName").value = name;
-  document.getElementById("webNiche").value = niche;
-  document.getElementById("webLocation").value = location;
-  if (phone) document.getElementById("webPhone").value = phone;
+  document.getElementById("webBizName").value = r.business_name;
+  document.getElementById("webNiche").value = r.niche;
+  document.getElementById("webLocation").value = r.city + ', ' + r.state;
+  if (r.phone) document.getElementById("webPhone").value = r.phone;
 }
 
 // ── Bulk Search ──
@@ -276,12 +278,18 @@ async function doNicheScan() {
             <td>${r.weak_presence_pct}%</td>
             <td><span class="score-badge ${r.opportunity_score >= 70 ? 'score-hot' : r.opportunity_score >= 50 ? 'score-good' : 'score-moderate'}">${r.opportunity_score}</span></td>
             <td>$${r.avg_cpc}</td><td>${r.monthly_search_volume.toLocaleString()}</td>
-            <td><button class="btn btn-sm btn-primary" onclick="document.getElementById('searchNiche').value='${r.niche}';document.getElementById('searchLocation').value='${r.city}';navigate('search');">Search Leads</button></td>
+            <td><button class="btn btn-sm btn-primary" onclick="searchFromNicheScan(this)" data-niche="${r.niche.replace(/"/g,'&quot;')}" data-city="${r.city.replace(/"/g,'&quot;')}">Search Leads</button></td>
           </tr>
         `).join("")}</tbody>
       </table>
     `;
   } catch (e) { showToast(e.message, "error"); }
+}
+
+function searchFromNicheScan(btn) {
+  document.getElementById('searchNiche').value = btn.dataset.niche;
+  document.getElementById('searchLocation').value = btn.dataset.city;
+  navigate('search');
 }
 
 // ── SERP Analyzer ──
