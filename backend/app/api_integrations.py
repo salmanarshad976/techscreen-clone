@@ -126,16 +126,16 @@ async def get_pagespeed(url: str) -> dict | None:
             categories = lighthouse.get("categories", {})
             audits = lighthouse.get("audits", {})
 
-            perf_score = categories.get("performance", {}).get("score", 0)
-            seo_score = categories.get("seo", {}).get("score", 0)
+            perf_score = categories.get("performance", {}).get("score") or 0
+            seo_score = categories.get("seo", {}).get("score") or 0
 
-            speed_index = audits.get("speed-index", {}).get("numericValue", 0) / 1000
-            fcp = audits.get("first-contentful-paint", {}).get("numericValue", 0) / 1000
-            lcp = audits.get("largest-contentful-paint", {}).get("numericValue", 0) / 1000
+            speed_index = (audits.get("speed-index", {}).get("numericValue") or 0) / 1000
+            fcp = (audits.get("first-contentful-paint", {}).get("numericValue") or 0) / 1000
+            lcp = (audits.get("largest-contentful-paint", {}).get("numericValue") or 0) / 1000
 
             has_ssl = url.startswith("https")
-            has_meta_desc = audits.get("meta-description", {}).get("score", 0) == 1
-            has_viewport = audits.get("viewport", {}).get("score", 0) == 1
+            has_meta_desc = audits.get("meta-description", {}).get("score") == 1
+            has_viewport = audits.get("viewport", {}).get("score") == 1
 
             return {
                 "performance_score": round(perf_score * 100),
