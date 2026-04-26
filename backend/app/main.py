@@ -161,8 +161,9 @@ async def search_leads(req: SearchRequest, user: User = Depends(get_current_user
 
     search = Search(user_id=user.id, niche=req.niche, location=req.location, result_count=len(leads))
     db.add(search)
-    user.searches_used += 1
+    db.query(User).filter(User.id == user.id).update({User.searches_used: User.searches_used + 1})
     db.commit()
+    db.refresh(user)
     db.refresh(search)
 
     db_leads = []
@@ -236,7 +237,7 @@ def bulk_search(req: BulkSearchRequest, user: User = Depends(get_current_user), 
         all_results.extend(leads)
         search = Search(user_id=user.id, niche=req.niche, location=city, result_count=len(leads))
         db.add(search)
-        user.searches_used += 1
+    db.query(User).filter(User.id == user.id).update({User.searches_used: User.searches_used + len(req.cities[:10])})
     db.commit()
     all_results.sort(key=lambda x: x["opportunity_score"], reverse=True)
     return {"niche": req.niche, "cities": req.cities[:10], "total": len(all_results), "results": all_results}
@@ -319,7 +320,7 @@ async def generate_pitch(req: PitchRequest, user: User = Depends(get_current_use
     }
     ai_pitch = await real_api.generate_ai_pitch(lead_dict, req.tone)
     if ai_pitch:
-        user.pitches_sent += 1
+        db.query(User).filter(User.id == user.id).update({User.pitches_sent: User.pitches_sent + 1})
         db.commit()
         return {"subject": ai_pitch["subject"], "body": ai_pitch["body"], "lead_id": lead.id, "tone": req.tone}
 
@@ -364,7 +365,7 @@ No pressure at all — happy to share a few free tips either way.
 
 Best regards"""
 
-    user.pitches_sent += 1
+    db.query(User).filter(User.id == user.id).update({User.pitches_sent: User.pitches_sent + 1})
     db.commit()
 
     return {"subject": subject, "body": body, "lead_id": lead.id, "tone": req.tone}
@@ -379,7 +380,7 @@ def save_lead(lead_id: int, user: User = Depends(get_current_user), db: Session 
     if lead.saved:
         return {"saved": True, "id": lead_id}
     lead.saved = True
-    user.saved_leads_count += 1
+    db.query(User).filter(User.id == user.id).update({User.saved_leads_count: User.saved_leads_count + 1})
     db.commit()
     return {"saved": True, "id": lead_id}
 

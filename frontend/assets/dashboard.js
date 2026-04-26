@@ -476,8 +476,8 @@ async function loadPipeline() {
             <div class="kanban-col-title"><span>${stageNames[stage]}</span><span>${leads.length}</span></div>
             ${leads.map(l => `
               <div class="kanban-card">
-                <h4>${l.business_name}</h4>
-                <p>${l.city}, ${l.state} · ${l.niche}</p>
+                <h4>${escapeHtml(l.business_name)}</h4>
+                <p>${escapeHtml(l.city)}, ${escapeHtml(l.state)} · ${escapeHtml(l.niche)}</p>
                 <div style="margin-top:6px;display:flex;gap:4px;">
                   ${Object.keys(stageNames).filter(s => s !== stage).map(s => `<button class="btn btn-sm btn-ghost" onclick="moveStage(${l.id},'${s}')" style="font-size:0.7rem;">${stageNames[s]}</button>`).join("")}
                 </div>
