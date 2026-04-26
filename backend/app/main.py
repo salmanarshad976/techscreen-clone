@@ -2,7 +2,7 @@ import os
 import logging
 from fastapi import FastAPI, Depends, HTTPException, Header
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy import func as sa_func
+from sqlalchemy import case
 from sqlalchemy.orm import Session
 
 from .db import Base, engine, get_db
@@ -395,7 +395,7 @@ def unsave_lead(lead_id: int, user: User = Depends(get_current_user), db: Sessio
         return {"saved": False, "id": lead_id}
     lead.saved = False
     db.query(User).filter(User.id == user.id).update(
-        {User.saved_leads_count: sa_func.max(0, User.saved_leads_count - 1)}
+        {User.saved_leads_count: case((User.saved_leads_count > 0, User.saved_leads_count - 1), else_=0)}
     )
     db.commit()
     return {"saved": False, "id": lead_id}

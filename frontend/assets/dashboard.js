@@ -673,9 +673,9 @@ function downloadWebsite() {
 
 function previewWebsite() {
   if (!window._lastWebsiteHtml) return;
-  const w = window.open();
-  w.document.write(window._lastWebsiteHtml);
-  w.document.close();
+  const blob = new Blob([window._lastWebsiteHtml], { type: "text/html" });
+  const url = URL.createObjectURL(blob);
+  window.open(url, "_blank");
 }
 
 // ── Settings ──
