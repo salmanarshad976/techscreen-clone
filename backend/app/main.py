@@ -1,4 +1,5 @@
 import os
+import logging
 from fastapi import FastAPI, Depends, HTTPException, Header
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
@@ -19,6 +20,9 @@ from .lead_generator import (
     generate_competitor_compare, generate_nap_audit, generate_backlinks,
     generate_website,
 )
+from . import api_integrations as real_api
+
+logger = logging.getLogger(__name__)
 
 Base.metadata.create_all(bind=engine)
 
@@ -57,7 +61,16 @@ def get_current_user(authorization: str = Header(None), db: Session = Depends(ge
 # ── Health ──
 @app.get("/api/health")
 def health():
-    return {"status": "ok", "service": "freelanceleads"}
+    return {
+        "status": "ok",
+        "service": "freelanceleads",
+        "apis": {
+            "google_places": real_api.has_google_key(),
+            "pagespeed": True,
+            "gemini": real_api.has_gemini_key(),
+            "custom_search": real_api.has_google_key() and bool(os.getenv("GOOGLE_CUSTOM_SEARCH_CX", "")),
+        },
+    }
 
 
 # ── Auth ──
@@ -126,11 +139,25 @@ def dashboard(user: User = Depends(get_current_user), db: Session = Depends(get_
 
 # ── Lead Search ──
 @app.post("/api/search")
-def search_leads(req: SearchRequest, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+async def search_leads(req: SearchRequest, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     if user.searches_used >= user.searches_limit:
         raise HTTPException(status_code=403, detail="Search limit reached. Upgrade your plan.")
 
-    leads = generate_leads(req.niche, req.location, count=40)
+    # Try real Google Places API first, fall back to mock data
+    real_places = await real_api.search_places(req.niche, req.location, max_results=20)
+    if real_places:
+        logger.info("Using real Places API data for %s in %s", req.niche, req.location)
+        # Score each lead (with optional PageSpeed data)
+        leads = []
+        for place in real_places:
+            ps_data = None
+            if place.get("website"):
+                ps_data = await real_api.get_pagespeed(place["website"])
+            scored = real_api.score_lead(place, ps_data)
+            leads.append(scored)
+        leads.sort(key=lambda x: x["opportunity_score"], reverse=True)
+    else:
+        leads = generate_leads(req.niche, req.location, count=40)
 
     search = Search(user_id=user.id, niche=req.niche, location=req.location, result_count=len(leads))
     db.add(search)
@@ -224,14 +251,42 @@ def niche_scan(req: NicheScanRequest, user: User = Depends(get_current_user)):
 
 # ── SERP Analyzer ──
 @app.post("/api/serp")
-def serp_analyze(req: SerpRequest, user: User = Depends(get_current_user)):
+async def serp_analyze(req: SerpRequest, user: User = Depends(get_current_user)):
+    is_url = "." in req.query and " " not in req.query
+    if is_url:
+        url = req.query if req.query.startswith("http") else f"https://{req.query}"
+        ps_data = await real_api.get_pagespeed(url)
+        if ps_data:
+            mock = generate_serp_results(req.query)
+            mock["page_speed_mobile"] = ps_data["performance_score"]
+            mock["page_speed_desktop"] = ps_data.get("performance_score", 0)
+            mock["real_pagespeed"] = True
+            mock["pagespeed_details"] = ps_data
+            return mock
+    else:
+        real_serp = await real_api.search_serp(req.query, req.location)
+        if real_serp:
+            return real_serp
     return generate_serp_results(req.query)
 
 
 # ── Competitor Compare ──
 @app.post("/api/competitor-compare")
-def competitor_compare(req: CompetitorCompareRequest, user: User = Depends(get_current_user)):
-    return generate_competitor_compare(req.url1, req.url2)
+async def competitor_compare(req: CompetitorCompareRequest, user: User = Depends(get_current_user)):
+    result = generate_competitor_compare(req.url1, req.url2)
+    url1 = req.url1 if req.url1.startswith("http") else f"https://{req.url1}"
+    url2 = req.url2 if req.url2.startswith("http") else f"https://{req.url2}"
+    ps1 = await real_api.get_pagespeed(url1)
+    ps2 = await real_api.get_pagespeed(url2)
+    if ps1:
+        result["site1"]["page_speed"] = ps1["performance_score"]
+        result["site1"]["has_ssl"] = ps1["has_ssl"]
+        result["site1"]["real_pagespeed"] = True
+    if ps2:
+        result["site2"]["page_speed"] = ps2["performance_score"]
+        result["site2"]["has_ssl"] = ps2["has_ssl"]
+        result["site2"]["real_pagespeed"] = True
+    return result
 
 
 # ── NAP Audit ──
@@ -248,13 +303,27 @@ def backlinks(req: BacklinkRequest, user: User = Depends(get_current_user)):
 
 # ── AI Pitch Generator ──
 @app.post("/api/pitch")
-def generate_pitch(req: PitchRequest, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+async def generate_pitch(req: PitchRequest, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     lead = db.query(Lead).filter(Lead.id == req.lead_id, Lead.user_id == user.id).first()
     if not lead:
         raise HTTPException(status_code=404, detail="Lead not found")
     needs_list = lead.needs if isinstance(lead.needs, list) else []
-    need_descriptions = [n.get("label", "") for n in needs_list if isinstance(n, dict)]
 
+    # Try Gemini AI first
+    lead_dict = {
+        "business_name": lead.business_name, "niche": lead.niche,
+        "city": lead.city, "state": lead.state, "website": lead.website,
+        "rating": lead.rating, "review_count": lead.review_count,
+        "page_speed": lead.page_speed, "needs": needs_list,
+        "has_website": lead.has_website,
+    }
+    ai_pitch = await real_api.generate_ai_pitch(lead_dict, req.tone)
+    if ai_pitch:
+        user.pitches_sent += 1
+        db.commit()
+        return {"subject": ai_pitch["subject"], "body": ai_pitch["body"], "lead_id": lead.id, "tone": req.tone}
+
+    # Fallback to template-based pitch
     subject = f"Quick question about {lead.business_name}'s online presence"
     body = f"""Hi there,
 
@@ -501,7 +570,10 @@ def roi_calculate(req: RoiCalculatorRequest, user: User = Depends(get_current_us
 
 # ── AI Website Generator ──
 @app.post("/api/generate-website")
-def gen_website(req: WebsiteGenerateRequest, user: User = Depends(get_current_user)):
+async def gen_website(req: WebsiteGenerateRequest, user: User = Depends(get_current_user)):
+    ai_site = await real_api.generate_ai_website(req.business_name, req.niche, req.location, req.phone, req.description)
+    if ai_site:
+        return ai_site
     return generate_website(req.business_name, req.niche, req.location, req.phone, req.description)
 
 

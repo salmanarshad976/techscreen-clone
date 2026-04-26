@@ -619,32 +619,63 @@ async function doGenerateWebsite() {
   try {
     const phone = document.getElementById("webPhone").value.trim() || "(555) 123-4567";
     const data = await api.generateWebsite(name, niche, location, phone);
-    document.getElementById("websitePreview").innerHTML = `
-      <div class="website-preview">
-        <div class="hero-section">
-          <h1>${name}</h1>
-          <p>Professional ${niche} Services in ${location}</p>
-          <p style="margin-top:16px;"><strong>Call Now: ${phone}</strong></p>
+    if (data.html) {
+      // AI-generated full HTML website
+      document.getElementById("websitePreview").innerHTML = `
+        <div style="margin-bottom:12px;display:flex;gap:8px;justify-content:center;">
+          <button class="btn btn-primary" onclick="downloadWebsite()">Download HTML</button>
+          <button class="btn btn-secondary" onclick="previewWebsite()">Open Preview</button>
         </div>
-        <div class="services-section">
-          <h2>Our Services</h2>
-          <div class="services-grid">
-            <div class="service-card"><h3>Service 1</h3><p>Professional ${niche.toLowerCase()} service with guaranteed satisfaction</p></div>
-            <div class="service-card"><h3>Service 2</h3><p>Emergency ${niche.toLowerCase()} available 24/7</p></div>
-            <div class="service-card"><h3>Service 3</h3><p>Free estimates and competitive pricing</p></div>
+        <iframe id="websiteFrame" style="width:100%;height:600px;border:1px solid var(--border);border-radius:8px;" sandbox="allow-scripts"></iframe>
+        <p style="text-align:center;margin-top:12px;color:var(--text-muted);font-size:0.85rem;">AI-generated website by Google Gemini</p>
+      `;
+      window._lastWebsiteHtml = data.html;
+      const frame = document.getElementById("websiteFrame");
+      frame.srcdoc = data.html;
+    } else {
+      document.getElementById("websitePreview").innerHTML = `
+        <div class="website-preview">
+          <div class="hero-section">
+            <h1>${escapeHtml(name)}</h1>
+            <p>Professional ${escapeHtml(niche)} Services in ${escapeHtml(location)}</p>
+            <p style="margin-top:16px;"><strong>Call Now: ${escapeHtml(phone)}</strong></p>
+          </div>
+          <div class="services-section">
+            <h2>Our Services</h2>
+            <div class="services-grid">
+              <div class="service-card"><h3>Service 1</h3><p>Professional ${escapeHtml(niche.toLowerCase())} service with guaranteed satisfaction</p></div>
+              <div class="service-card"><h3>Service 2</h3><p>Emergency ${escapeHtml(niche.toLowerCase())} available 24/7</p></div>
+              <div class="service-card"><h3>Service 3</h3><p>Free estimates and competitive pricing</p></div>
+            </div>
+          </div>
+          <div class="contact-section">
+            <h2>Contact Us</h2>
+            <p>${escapeHtml(name)} · ${escapeHtml(location)}</p>
+            <p>Phone: ${escapeHtml(phone)}</p>
+            <p style="margin-top:12px;"><strong>Serving ${escapeHtml(location)} and surrounding areas</strong></p>
           </div>
         </div>
-        <div class="contact-section">
-          <h2>Contact Us</h2>
-          <p>${name} · ${location}</p>
-          <p>📞 ${phone}</p>
-          <p style="margin-top:12px;"><strong>Serving ${location} and surrounding areas</strong></p>
-        </div>
-      </div>
-      <p style="text-align:center;margin-top:12px;color:var(--text-muted);font-size:0.85rem;">Demo website generated. In production, this would be a fully hosted site.</p>
-    `;
+        <p style="text-align:center;margin-top:12px;color:var(--text-muted);font-size:0.85rem;">Demo website generated. Add Gemini API key for AI-powered websites.</p>
+      `;
+    }
     showToast("Website generated!");
   } catch (e) { showToast(e.message, "error"); }
+}
+
+function downloadWebsite() {
+  if (!window._lastWebsiteHtml) return;
+  const blob = new Blob([window._lastWebsiteHtml], { type: "text/html" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "website.html";
+  a.click();
+}
+
+function previewWebsite() {
+  if (!window._lastWebsiteHtml) return;
+  const w = window.open();
+  w.document.write(window._lastWebsiteHtml);
+  w.document.close();
 }
 
 // ── Settings ──
