@@ -506,7 +506,7 @@ async function doCompare() {
     document.getElementById("compareResults").innerHTML = `
       <div class="compare-grid">
         <div class="compare-col">
-          <h3 style="margin-bottom:16px;word-break:break-all;">${data.site1.url}</h3>
+          <h3 style="margin-bottom:16px;word-break:break-all;">${escapeHtml(data.site1.url)}</h3>
           ${metrics.map(m => {
             const better = data.site1[m] >= data.site2[m];
             return `<div class="metric-row"><span class="metric-label">${labels[m]}</span><span class="metric-value ${better ? 'good' : 'bad'}">${typeof data.site1[m] === 'number' ? data.site1[m].toLocaleString() : data.site1[m]}</span></div>`;
@@ -514,7 +514,7 @@ async function doCompare() {
         </div>
         <div class="compare-vs">VS</div>
         <div class="compare-col">
-          <h3 style="margin-bottom:16px;word-break:break-all;">${data.site2.url}</h3>
+          <h3 style="margin-bottom:16px;word-break:break-all;">${escapeHtml(data.site2.url)}</h3>
           ${metrics.map(m => {
             const better = data.site2[m] >= data.site1[m];
             return `<div class="metric-row"><span class="metric-label">${labels[m]}</span><span class="metric-value ${better ? 'good' : 'bad'}">${typeof data.site2[m] === 'number' ? data.site2[m].toLocaleString() : data.site2[m]}</span></div>`;
@@ -539,7 +539,7 @@ async function doCreateProposal() {
 async function loadProposals() {
   try {
     const data = await api.getProposals();
-    document.getElementById("proposalsList").innerHTML = data.length ? data.map(p => `<div class="card" style="margin-bottom:8px;"><div style="display:flex;justify-content:space-between;"><strong>${p.title}</strong><span class="lead-badge badge-moderate">${p.status}</span></div><p style="font-size:0.8rem;color:var(--text-secondary);">${p.client_name} · ${timeAgo(p.created_at)}</p></div>`).join("") : '<div class="empty-state"><h3>No proposals yet</h3><p>Create your first proposal above.</p></div>';
+    document.getElementById("proposalsList").innerHTML = data.length ? data.map(p => `<div class="card" style="margin-bottom:8px;"><div style="display:flex;justify-content:space-between;"><strong>${escapeHtml(p.title)}</strong><span class="lead-badge badge-moderate">${escapeHtml(p.status)}</span></div><p style="font-size:0.8rem;color:var(--text-secondary);">${escapeHtml(p.client_name)} · ${timeAgo(p.created_at)}</p></div>`).join("") : '<div class="empty-state"><h3>No proposals yet</h3><p>Create your first proposal above.</p></div>';
   } catch (e) {}
 }
 
@@ -552,7 +552,7 @@ async function doCreateCampaign() {
 async function loadCampaigns() {
   try {
     const data = await api.getCampaigns();
-    document.getElementById("campaignsList").innerHTML = data.length ? data.map(c => `<div class="card" style="margin-bottom:8px;"><div style="display:flex;justify-content:space-between;"><strong>${c.name}</strong><span class="lead-badge badge-moderate">${c.status}</span></div><p style="font-size:0.8rem;color:var(--text-secondary);">Leads: ${c.total_leads} · Sent: ${c.emails_sent} · Replies: ${c.replies} · ${timeAgo(c.created_at)}</p></div>`).join("") : '<div class="empty-state"><h3>No campaigns yet</h3><p>Create your first campaign to start outreach at scale.</p></div>';
+    document.getElementById("campaignsList").innerHTML = data.length ? data.map(c => `<div class="card" style="margin-bottom:8px;"><div style="display:flex;justify-content:space-between;"><strong>${escapeHtml(c.name)}</strong><span class="lead-badge badge-moderate">${escapeHtml(c.status)}</span></div><p style="font-size:0.8rem;color:var(--text-secondary);">Leads: ${c.total_leads} · Sent: ${c.emails_sent} · Replies: ${c.replies} · ${timeAgo(c.created_at)}</p></div>`).join("") : '<div class="empty-state"><h3>No campaigns yet</h3><p>Create your first campaign to start outreach at scale.</p></div>';
   } catch (e) {}
 }
 
@@ -567,7 +567,7 @@ async function doCreateTemplate() {
 async function loadTemplates() {
   try {
     const data = await api.getTemplates();
-    document.getElementById("templatesList").innerHTML = data.length ? data.map(t => `<div class="card" style="margin-bottom:8px;"><strong>${t.name}</strong><p style="font-size:0.8rem;color:var(--text-secondary);margin-top:4px;">Subject: ${t.subject}</p><p style="font-size:0.8rem;color:var(--text-muted);margin-top:4px;white-space:pre-wrap;">${t.body}</p></div>`).join("") : '<div class="empty-state"><h3>No templates yet</h3><p>Create reusable email templates above.</p></div>';
+    document.getElementById("templatesList").innerHTML = data.length ? data.map(t => `<div class="card" style="margin-bottom:8px;"><strong>${escapeHtml(t.name)}</strong><p style="font-size:0.8rem;color:var(--text-secondary);margin-top:4px;">Subject: ${escapeHtml(t.subject)}</p><p style="font-size:0.8rem;color:var(--text-muted);margin-top:4px;white-space:pre-wrap;">${escapeHtml(t.body)}</p></div>`).join("") : '<div class="empty-state"><h3>No templates yet</h3><p>Create reusable email templates above.</p></div>';
   } catch (e) {}
 }
 
@@ -582,7 +582,7 @@ async function doCreateCaseStudy() {
 async function loadCaseStudies() {
   try {
     const data = await api.getCaseStudies();
-    document.getElementById("caseStudiesList").innerHTML = data.length ? data.map(s => `<div class="card" style="margin-bottom:8px;"><strong>${s.title}</strong><p style="font-size:0.8rem;color:var(--text-secondary);">${s.client_name} · ${s.published ? 'Published' : 'Draft'} · ${timeAgo(s.created_at)}</p></div>`).join("") : '<div class="empty-state"><h3>No case studies yet</h3><p>Create your first case study above.</p></div>';
+    document.getElementById("caseStudiesList").innerHTML = data.length ? data.map(s => `<div class="card" style="margin-bottom:8px;"><strong>${escapeHtml(s.title)}</strong><p style="font-size:0.8rem;color:var(--text-secondary);">${escapeHtml(s.client_name)} · ${s.published ? 'Published' : 'Draft'} · ${timeAgo(s.created_at)}</p></div>`).join("") : '<div class="empty-state"><h3>No case studies yet</h3><p>Create your first case study above.</p></div>';
   } catch (e) {}
 }
 
