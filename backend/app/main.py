@@ -212,7 +212,7 @@ def bulk_search(req: BulkSearchRequest, user: User = Depends(get_current_user), 
         user.searches_used += 1
     db.commit()
     all_results.sort(key=lambda x: x["opportunity_score"], reverse=True)
-    return {"niche": req.niche, "cities": req.cities, "total": len(all_results), "results": all_results}
+    return {"niche": req.niche, "cities": req.cities[:10], "total": len(all_results), "results": all_results}
 
 
 # ── Niche Scanner ──
