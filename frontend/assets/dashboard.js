@@ -55,7 +55,7 @@ async function init() {
       el.innerHTML = dashboardData.recent_searches.map(s => `
         <div class="card" style="margin-bottom:8px;cursor:pointer;" onclick="loadPreviousSearch(${s.id})">
           <div style="display:flex;justify-content:space-between;align-items:center;">
-            <div><strong>${s.niche}</strong> in ${s.location} <span style="color:var(--text-muted);font-size:0.8rem;">— ${s.result_count} results</span></div>
+            <div><strong>${escapeHtml(s.niche)}</strong> in ${escapeHtml(s.location)} <span style="color:var(--text-muted);font-size:0.8rem;">— ${s.result_count} results</span></div>
             <span style="font-size:0.75rem;color:var(--text-muted);">${timeAgo(s.created_at)}</span>
           </div>
         </div>
@@ -140,20 +140,20 @@ function renderResults(results) {
       <div class="lead-card">
         <div class="lead-header">
           <div>
-            <span class="lead-name">${r.business_name}</span>
+            <span class="lead-name">${escapeHtml(r.business_name)}</span>
             <span class="lead-badge ${badgeClass}" style="margin-left:8px;">${badgeText}</span>
           </div>
           <span class="score-badge ${scoreClass}">${r.opportunity_score}</span>
         </div>
         <div class="lead-meta">
-          <span>📍 ${r.city}, ${r.state}</span>
+          <span>📍 ${escapeHtml(r.city)}, ${escapeHtml(r.state)}</span>
           ${r.rating ? `<span>⭐ ${r.rating} (${r.review_count})</span>` : '<span style="color:var(--text-muted);">No rating</span>'}
           ${r.phone ? `<span>📞 ${r.phone}</span>` : ''}
         </div>
         <div class="lead-needs">
-          ${r.needs.map(n => `<span class="need-badge" title="${n.description}">${n.label}</span>`).join("")}
+          ${r.needs.map(n => `<span class="need-badge" title="${escapeHtml(n.description)}">${escapeHtml(n.label)}</span>`).join("")}
         </div>
-        <div class="lead-pitch">${r.pitch_suggestion}</div>
+        <div class="lead-pitch">${escapeHtml(r.pitch_suggestion)}</div>
         <div class="lead-actions">
           <button class="btn btn-sm btn-primary" onclick="saveLead(${r.id})">${r.saved ? '✓ Saved' : 'Save'}</button>
           <button class="btn btn-sm btn-secondary" onclick="generatePitch(${r.id})">AI Pitch</button>
@@ -208,8 +208,8 @@ async function generatePitch(id) {
       <button class="modal-close" onclick="closeModal()">✕</button>
       <h2>AI-Generated Pitch</h2>
       <div class="pitch-preview">
-        <div class="pitch-subject">Subject: ${data.subject}</div>
-        ${data.body.replace(/\n/g, "<br>")}
+        <div class="pitch-subject">Subject: ${escapeHtml(data.subject)}</div>
+        ${escapeHtml(data.body).replace(/\n/g, "<br>")}
       </div>
       <div style="margin-top:16px;display:flex;gap:8px;">
         <button class="btn btn-primary" onclick="copyPitch()">Copy to Clipboard</button>
@@ -251,10 +251,10 @@ async function doBulkSearch() {
       ${data.results.slice(0, 30).map(r => `
         <div class="lead-card" style="margin-top:8px;">
           <div class="lead-header">
-            <span class="lead-name">${r.business_name}</span>
+            <span class="lead-name">${escapeHtml(r.business_name)}</span>
             <span class="score-badge ${r.opportunity_score >= 70 ? 'score-hot' : r.opportunity_score >= 50 ? 'score-good' : 'score-moderate'}">${r.opportunity_score}</span>
           </div>
-          <div class="lead-meta"><span>📍 ${r.city}, ${r.state}</span>${r.rating ? `<span>⭐ ${r.rating}</span>` : ''}<span>📞 ${r.phone}</span></div>
+          <div class="lead-meta"><span>📍 ${escapeHtml(r.city)}, ${escapeHtml(r.state)}</span>${r.rating ? `<span>⭐ ${r.rating}</span>` : ''}<span>📞 ${r.phone}</span></div>
         </div>
       `).join("")}
     `;
@@ -274,7 +274,7 @@ async function doNicheScan() {
         <thead><tr><th>Niche</th><th>City</th><th>Businesses</th><th>Weak %</th><th>Opportunity</th><th>Avg CPC</th><th>Monthly Volume</th><th>Action</th></tr></thead>
         <tbody>${data.results.map(r => `
           <tr>
-            <td>${r.niche}</td><td>${r.city}</td><td>${r.business_count}</td>
+            <td>${escapeHtml(r.niche)}</td><td>${escapeHtml(r.city)}</td><td>${r.business_count}</td>
             <td>${r.weak_presence_pct}%</td>
             <td><span class="score-badge ${r.opportunity_score >= 70 ? 'score-hot' : r.opportunity_score >= 50 ? 'score-good' : 'score-moderate'}">${r.opportunity_score}</span></td>
             <td>$${r.avg_cpc}</td><td>${r.monthly_search_volume.toLocaleString()}</td>
@@ -305,13 +305,13 @@ async function doSerpAnalysis() {
           <div class="card"><div class="card-title">Monthly Volume</div><div class="card-value">${data.monthly_volume.toLocaleString()}</div></div>
           <div class="card"><div class="card-title">CPC</div><div class="card-value">$${data.cpc}</div></div>
         </div>
-        <h3 style="margin-bottom:12px;">Top 10 Results for "${data.query}"</h3>
+        <h3 style="margin-bottom:12px;">Top 10 Results for "${escapeHtml(data.query)}"</h3>
         ${data.competitors.map(c => `
           <div class="serp-item">
             <span class="serp-position">${c.position}</span>
             <div style="display:inline-block;vertical-align:top;">
-              <div class="serp-url">${c.url}</div>
-              <div class="serp-title">${c.title}</div>
+              <div class="serp-url">${escapeHtml(c.url)}</div>
+              <div class="serp-title">${escapeHtml(c.title)}</div>
               <div class="serp-meta">
                 <span>DA: ${c.domain_authority}</span>
                 <span>Words: ${c.word_count.toLocaleString()}</span>
@@ -656,6 +656,7 @@ function loadSettings() {
 }
 
 // ── Helpers ──
+function escapeHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
 function openModal(html) {
   document.getElementById("modalContent").innerHTML = html;
   document.getElementById("modalOverlay").style.display = "flex";

@@ -333,6 +333,9 @@ def update_stage(lead_id: int, req: PipelineUpdateRequest, user: User = Depends(
     lead = db.query(Lead).filter(Lead.id == lead_id, Lead.user_id == user.id).first()
     if not lead:
         raise HTTPException(status_code=404, detail="Lead not found")
+    valid_stages = {"new", "contacted", "replied", "proposal", "closed"}
+    if req.stage not in valid_stages:
+        raise HTTPException(status_code=400, detail=f"Invalid stage. Must be one of: {', '.join(valid_stages)}")
     lead.pipeline_stage = req.stage
     db.commit()
     return {"id": lead_id, "stage": req.stage}
