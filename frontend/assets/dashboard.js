@@ -158,7 +158,7 @@ function renderResults(results) {
           <button class="btn btn-sm btn-primary" onclick="saveLead(${r.id})">${r.saved ? '✓ Saved' : 'Save'}</button>
           <button class="btn btn-sm btn-secondary" onclick="generatePitch(${r.id})">AI Pitch</button>
           <button class="btn btn-sm btn-secondary" onclick="buildSiteForLead(${r.id})">Build Site</button>
-          ${r.phone ? `<a class="btn btn-sm btn-ghost" href="https://wa.me/${r.phone.replace(/[^0-9]/g,'')}" target="_blank">WhatsApp</a>` : ''}
+          ${r.phone ? `<a class="btn btn-sm btn-ghost" href="https://wa.me/1${r.phone.replace(/[^0-9]/g,'')}" target="_blank">WhatsApp</a>` : ''}
           ${r.website ? `<a class="btn btn-sm btn-ghost" href="${r.website}" target="_blank">Website</a>` : ''}
         </div>
       </div>
