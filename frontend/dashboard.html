@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FreelanceLeads.io - Dashboard</title>
+  <link rel="stylesheet" href="assets/app.css">
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/></svg>
+      FreelanceLeads.io
+    </div>
+    <div style="flex:1;overflow-y:auto;padding:8px 0;">
+      <div class="sidebar-section">
+        <a href="#" class="sidebar-link" data-page="dashboard" onclick="navigate('dashboard')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Prospecting</div>
+        <a href="#" class="sidebar-link" data-page="search" onclick="navigate('search')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          Search Leads
+        </a>
+        <a href="#" class="sidebar-link" data-page="bulk-search" onclick="navigate('bulk-search')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>
+          Bulk City Search
+        </a>
+        <a href="#" class="sidebar-link" data-page="niche-scanner" onclick="navigate('niche-scanner')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+          Niche Scanner
+        </a>
+        <a href="#" class="sidebar-link" data-page="tech-discovery" onclick="navigate('tech-discovery')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          Tech Discovery
+        </a>
+        <a href="#" class="sidebar-link" data-page="serp" onclick="navigate('serp')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 17l4-8 4 4 4-6"/></svg>
+          SERP Analyzer
+        </a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Local SEO</div>
+        <a href="#" class="sidebar-link" data-page="nap-audit" onclick="navigate('nap-audit')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          NAP Citation Audit
+        </a>
+        <a href="#" class="sidebar-link" data-page="backlinks" onclick="navigate('backlinks')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          Backlink Finder
+        </a>
+        <a href="#" class="sidebar-link" data-page="backlink-monitoring" onclick="navigate('backlink-monitoring')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          Backlink Monitoring
+        </a>
+        <a href="#" class="sidebar-link" data-page="rank-tracking" onclick="navigate('rank-tracking')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+          Rank Tracking
+        </a>
+        <a href="#" class="sidebar-link" data-page="link-health" onclick="navigate('link-health')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          Link Health
+        </a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Leads & CRM</div>
+        <a href="#" class="sidebar-link" data-page="pipeline" onclick="navigate('pipeline')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>
+          Leads & Pipeline
+        </a>
+        <a href="#" class="sidebar-link" data-page="competitor-compare" onclick="navigate('competitor-compare')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5M8 3H3v5M3 16v5h5M21 16v5h-5M12 12m-3 0a3 3 0 1 0 6 0 3 3 0 1 0-6 0"/></svg>
+          Competitor Compare
+        </a>
+        <a href="#" class="sidebar-link" data-page="proposals" onclick="navigate('proposals')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+          Proposals
+        </a>
+        <a href="#" class="sidebar-link" data-page="case-studies" onclick="navigate('case-studies')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+          Case Studies
+        </a>
+        <a href="#" class="sidebar-link" data-page="roi-calculator" onclick="navigate('roi-calculator')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><line x1="8" y1="10" x2="8" y2="10.01"/><line x1="12" y1="10" x2="12" y2="10.01"/><line x1="16" y1="10" x2="16" y2="10.01"/><line x1="8" y1="14" x2="8" y2="14.01"/><line x1="12" y1="14" x2="12" y2="14.01"/><line x1="8" y1="18" x2="8" y2="18.01"/><line x1="12" y1="18" x2="12" y2="18.01"/></svg>
+          ROI Calculator
+        </a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Outreach</div>
+        <a href="#" class="sidebar-link" data-page="inbox" onclick="navigate('inbox')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-6l-2 3H10l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+          Inbox
+        </a>
+        <a href="#" class="sidebar-link" data-page="campaigns" onclick="navigate('campaigns')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Campaigns
+        </a>
+        <a href="#" class="sidebar-link" data-page="templates" onclick="navigate('templates')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          Template Library
+        </a>
+        <a href="#" class="sidebar-link" data-page="review-templates" onclick="navigate('review-templates')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Review Templates
+        </a>
+        <a href="#" class="sidebar-link" data-page="deliverability" onclick="navigate('deliverability')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Deliverability
+        </a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Assets</div>
+        <a href="#" class="sidebar-link" data-page="websites" onclick="navigate('websites')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          AI Websites
+        </a>
+        <a href="#" class="sidebar-link" data-page="portfolio" onclick="navigate('portfolio')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          My Portfolio
+        </a>
+      </div>
+    </div>
+    <div class="sidebar-bottom">
+      <a href="#" class="sidebar-link" data-page="billing" onclick="navigate('billing')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        Billing
+      </a>
+      <a href="#" class="sidebar-link" data-page="settings" onclick="navigate('settings')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Settings
+      </a>
+      <a href="#" class="sidebar-link" onclick="api.logout()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Sign Out
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main-content">
+    <div class="upgrade-bar" id="upgradeBar">
+      <a href="#" onclick="navigate('billing')">Upgrade to Pro</a> for unlimited searches, AI pitches & priority support
+    </div>
+    <div class="top-bar">
+      <div class="top-bar-left">
+        <span id="breadcrumb">Dashboard</span>
+      </div>
+      <div class="top-bar-right">
+        <div class="usage-badge" id="usageBadge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <span id="usageText">0 / 5 searches</span>
+        </div>
+        <div class="user-badge">
+          <div class="user-avatar" id="userAvatar">SA</div>
+          <div>
+            <div style="font-size:0.85rem;font-weight:500;" id="userName">User</div>
+            <div style="font-size:0.7rem;color:var(--text-muted);" id="userPlan">Free Plan</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ DASHBOARD HOME ═══════════════ -->
+    <div class="page active" id="page-dashboard">
+      <div class="page-content">
+        <h1 class="page-title" id="welcomeTitle">Welcome back!</h1>
+        <p class="page-subtitle" id="welcomeSubtitle">0 leads saved · 0/5 searches this month</p>
+
+        <div class="stats-grid">
+          <div class="card">
+            <div class="card-title">Searches</div>
+            <div class="card-value" id="statSearches">0 / 5</div>
+            <div class="progress-bar" style="margin-top:8px;"><div class="progress-fill" id="searchProgress" style="width:0%"></div></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Saved Leads</div>
+            <div class="card-value" id="statLeads">0</div>
+          </div>
+          <div class="card">
+            <div class="card-title">Pitches Sent</div>
+            <div class="card-value" id="statPitches">0</div>
+          </div>
+        </div>
+
+        <h2 style="font-size:1.1rem;margin-bottom:16px;">Quick Actions</h2>
+        <div class="tools-grid">
+          <div class="tool-card" onclick="navigate('search')">
+            <div class="tool-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+            <h3>Lead Search</h3><p>Find businesses in any niche and city</p>
+          </div>
+          <div class="tool-card" onclick="navigate('pipeline')">
+            <div class="tool-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg></div>
+            <h3>Leads & Pipeline</h3><p>Manage your leads with kanban CRM</p>
+          </div>
+          <div class="tool-card" onclick="navigate('competitor-compare')">
+            <div class="tool-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5M8 3H3v5M3 16v5h5M21 16v5h-5"/></svg></div>
+            <h3>Competitor Analysis</h3><p>Analyze any website and find weak spots</p>
+          </div>
+          <div class="tool-card" onclick="navigate('niche-scanner')">
+            <div class="tool-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></div>
+            <h3>Niche Scanner</h3><p>Discover profitable niches with demand data</p>
+          </div>
+          <div class="tool-card" onclick="navigate('proposals')">
+            <div class="tool-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div>
+            <h3>Proposal Builder</h3><p>Generate branded proposals that close deals</p>
+          </div>
+          <div class="tool-card" onclick="navigate('serp')">
+            <div class="tool-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 17l4-8 4 4 4-6"/></svg></div>
+            <h3>SERP Analyzer</h3><p>Check how any business ranks on Google</p>
+          </div>
+          <div class="tool-card" onclick="navigate('roi-calculator')">
+            <div class="tool-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/></svg></div>
+            <h3>ROI Calculator</h3><p>Show clients the value of your services</p>
+          </div>
+          <div class="tool-card" onclick="navigate('websites')">
+            <div class="tool-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/></svg></div>
+            <h3>AI Website Generator</h3><p>Generate full websites for any business in seconds</p>
+          </div>
+        </div>
+
+        <h2 style="font-size:1.1rem;margin-bottom:16px;">Recent Searches</h2>
+        <div id="recentSearches" class="empty-state">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <h3>No searches yet</h3>
+          <p>Run your first search to see results here</p>
+          <button class="btn btn-primary" onclick="navigate('search')">Search Leads</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ SEARCH LEADS ═══════════════ -->
+    <div class="page" id="page-search">
+      <div class="page-content">
+        <h1 class="page-title">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          Search Leads
+        </h1>
+        <p class="page-subtitle">Find businesses in any niche and city, scored by opportunity</p>
+
+        <div class="guide-box">
+          <div class="icon">💡</div>
+          <div>
+            <h3>How Lead Search works</h3>
+            <ol>
+              <li>Enter a niche (e.g., "plumber") and a city (e.g., "Dallas, TX")</li>
+              <li>We scrape businesses and score them 0-100 by how much they need your help</li>
+              <li>Higher score = weaker online presence = hotter lead</li>
+              <li>Save leads to your pipeline and generate AI pitches</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="search-form">
+          <input type="text" id="searchNiche" placeholder="Business niche (e.g., HVAC, Dentist, Plumber)...">
+          <input type="text" id="searchLocation" placeholder="City, State (e.g., Houston, TX)...">
+          <button class="btn btn-primary" id="searchBtn" onclick="doSearch()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            Search
+          </button>
+        </div>
+
+        <div id="searchLoading" style="display:none;" class="loading">
+          <div style="text-align:center;">
+            <div class="spinner" style="margin:0 auto 16px;"></div>
+            <p style="color:var(--text-secondary);">Searching businesses...</p>
+            <p style="font-size:0.8rem;color:var(--text-muted);margin-top:8px;" id="searchTip">Did you know? 46% of all Google searches are for local businesses.</p>
+          </div>
+        </div>
+
+        <div id="searchResults" style="display:none;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
+            <div style="font-size:1.1rem;font-weight:600;" id="resultCount">0 businesses found</div>
+            <div style="display:flex;gap:8px;">
+              <select id="sortResults" style="width:auto;" onchange="sortResults()">
+                <option value="score-desc">Best Leads First</option>
+                <option value="rating-asc">Lowest Rating First</option>
+                <option value="rating-desc">Highest Rating First</option>
+                <option value="reviews-asc">Fewest Reviews First</option>
+                <option value="reviews-desc">Most Reviews First</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="filter-tabs" id="filterTabs"></div>
+          <div id="resultsList"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ BULK CITY SEARCH ═══════════════ -->
+    <div class="page" id="page-bulk-search">
+      <div class="page-content">
+        <h1 class="page-title">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>
+          Bulk Search
+        </h1>
+        <p class="page-subtitle">Search one niche across multiple cities at once</p>
+        <div class="guide-box">
+          <div class="icon">💡</div>
+          <div>
+            <h3>One niche, up to 10 cities, one combined result set</h3>
+            <p>The fastest way to seed a regional outreach campaign or scout territory expansion.</p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Niche</label>
+          <input type="text" id="bulkNiche" placeholder="Search 200+ niches...">
+        </div>
+        <div class="form-group">
+          <label>Cities <span style="color:var(--text-muted);font-weight:400;">(Max 10 cities)</span></label>
+          <textarea id="bulkCities" rows="4" placeholder="Austin, TX&#10;Dallas, TX&#10;Houston, TX&#10;San Antonio, TX"></textarea>
+          <p style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">One city per line, or comma-separated.</p>
+        </div>
+        <button class="btn btn-primary" onclick="doBulkSearch()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          Search All Cities
+        </button>
+        <div id="bulkResults" style="margin-top:24px;"></div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ NICHE SCANNER ═══════════════ -->
+    <div class="page" id="page-niche-scanner">
+      <div class="page-content">
+        <h1 class="page-title">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+          Niche Scanner
+        </h1>
+        <p class="page-subtitle">AI-powered market analysis to find the most profitable niche + city combinations</p>
+        <div class="guide-box">
+          <div class="icon">💡</div>
+          <div>
+            <h3>Is this niche + city worth pursuing? Answer before you pitch.</h3>
+            <p>Scores a market on business density, weak-presence ratio, and search demand.</p>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div class="form-group">
+            <label>Niches</label>
+            <input type="text" id="nicheScanNiches" placeholder="e.g., HVAC, Plumber, Dentist (comma-separated)">
+          </div>
+          <div class="form-group">
+            <label>Cities</label>
+            <input type="text" id="nicheScanCities" placeholder="e.g., Houston, Dallas, Austin (comma-separated)">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Service Type</label>
+          <select id="nicheScanService" style="width:auto;">
+            <option value="seo_wp">Local SEO + WordPress</option>
+            <option value="google_ads">Google Ads</option>
+            <option value="meta_ads">Meta Ads</option>
+            <option value="social_media">Social Media (organic)</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" onclick="doNicheScan()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+          Scan for Opportunities
+        </button>
+        <div id="nicheScanResults" style="margin-top:24px;"></div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ TECH DISCOVERY ═══════════════ -->
+    <div class="page" id="page-tech-discovery">
+      <div class="page-content">
+        <h1 class="page-title">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          Technology-Based Lead Discovery
+        </h1>
+        <p class="page-subtitle">Find businesses running a specific website builder or platform</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div class="form-group">
+            <label>Technology / Platform</label>
+            <select id="techPlatform">
+              <option>Wix</option><option>Squarespace</option><option>GoDaddy Website Builder</option>
+              <option>WordPress.com</option><option>Weebly</option><option>Jimdo</option>
+              <option>Webflow</option><option>Shopify</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Country (Optional)</label>
+            <select id="techCountry">
+              <option value="">Any Country</option><option>United States</option><option>United Kingdom</option>
+              <option>Canada</option><option>Australia</option><option>Germany</option><option>France</option>
+              <option>India</option><option>UAE</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Niche Keywords</label>
+          <input type="text" id="techKeywords" placeholder="dentist, lawyer, plumber">
+          <p style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">Comma-separated. Up to 5. Each must appear in the domain's title or description.</p>
+        </div>
+        <button class="btn btn-primary" onclick="showToast('Tech Discovery requires a DataForSEO API key. Configure in Settings.', 'error')">Find Domains</button>
+      </div>
+    </div>
+
+    <!-- ═══════════════ SERP ANALYZER ═══════════════ -->
+    <div class="page" id="page-serp">
+      <div class="page-content">
+        <h1 class="page-title">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 17l4-8 4 4 4-6"/></svg>
+          SERP Analyzer
+        </h1>
+        <p class="page-subtitle">Analyze any keyword or website for SEO insights</p>
+        <div class="guide-box">
+          <div class="icon">💡</div>
+          <div>
+            <h3>Two tools in one: rank a keyword's competition or audit a single site</h3>
+            <p>Keyword mode: enter a phrase → see top 10 Google results with difficulty scores. Website mode: enter a URL → get a full SEO audit.</p>
+          </div>
+        </div>
+        <div class="search-form">
+          <input type="text" id="serpQuery" placeholder='Enter keyword or website URL (e.g. "plumber dallas" or "example.com")'>
+          <button class="btn btn-primary" onclick="doSerpAnalysis()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            Analyze SERP
+          </button>
+        </div>
+        <div id="serpResults"></div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ NAP CITATION AUDIT ═══════════════ -->
+    <div class="page" id="page-nap-audit">
+      <div class="page-content">
+        <h1 class="page-title">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          NAP Citation Audit
+        </h1>
+        <p class="page-subtitle">Scan 46 directories for Name/Address/Phone consistency</p>
+        <div class="form-group"><label>Business Name</label><input type="text" id="napName" placeholder="e.g., Smith's Plumbing"></div>
+        <div class="form-group"><label>Address</label><input type="text" id="napAddress" placeholder="e.g., 123 Main St, Dallas, TX 75201"></div>
+        <div class="form-group"><label>Phone</label><input type="text" id="napPhone" placeholder="e.g., (214) 555-1234"></div>
+        <button class="btn btn-primary" onclick="doNapAudit()">Scan Directories</button>
+        <div id="napResults" style="margin-top:24px;"></div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ BACKLINK FINDER ═══════════════ -->
+    <div class="page" id="page-backlinks">
+      <div class="page-content">
+        <h1 class="page-title">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          Backlink Finder
+        </h1>
+        <p class="page-subtitle">Competitor backlink discovery with geo-fit scoring</p>
+        <div class="search-form">
+          <input type="text" id="backlinkDomain" placeholder="Enter domain (e.g., competitor.com)">
+          <button class="btn btn-primary" onclick="doBacklinks()">Find Backlinks</button>
+        </div>
+        <div id="backlinkResults"></div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ BACKLINK MONITORING ═══════════════ -->
+    <div class="page" id="page-backlink-monitoring">
+      <div class="page-content">
+        <h1 class="page-title">Backlink Monitoring</h1>
+        <p class="page-subtitle">Weekly diff alerts on saved backlink searches</p>
+        <div class="empty-state"><h3>No monitored domains</h3><p>Run a backlink search first, then save it for weekly monitoring.</p><button class="btn btn-primary" onclick="navigate('backlinks')">Go to Backlink Finder</button></div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ RANK TRACKING ═══════════════ -->
+    <div class="page" id="page-rank-tracking">
+      <div class="page-content">
+        <h1 class="page-title">Rank Tracking</h1>
+        <p class="page-subtitle">Daily Google rank checks with trend sparklines</p>
+        <div class="form-group"><label>Domain</label><input type="text" id="rankDomain" placeholder="e.g., mysite.com"></div>
+        <div class="form-group"><label>Keywords (comma-separated)</label><input type="text" id="rankKeywords" placeholder="plumber dallas, best plumber near me"></div>
+        <button class="btn btn-primary" onclick="doRankTracking()">Track Rankings</button>
+        <div id="rankResults" style="margin-top:24px;"></div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ LINK HEALTH ═══════════════ -->
+    <div class="page" id="page-link-health">
+      <div class="page-content">
+        <h1 class="page-title">Link Health</h1>
+        <p class="page-subtitle">Anchor text distribution + velocity alerts</p>
+        <div class="search-form">
+          <input type="text" id="linkHealthDomain" placeholder="Enter your domain">
+          <button class="btn btn-primary" onclick="doLinkHealth()">Analyze</button>
+        </div>
+        <div id="linkHealthResults"></div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ PIPELINE CRM ═══════════════ -->
+    <div class="page" id="page-pipeline">
+      <div class="page-content">
+        <h1 class="page-title">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>
+          Leads & Pipeline
+        </h1>
+        <p class="page-subtitle">Manage your saved leads through your sales pipeline</p>
+        <div id="pipelineContent"></div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ COMPETITOR COMPARE ═══════════════ -->
+    <div class="page" id="page-competitor-compare">
+      <div class="page-content">
+        <h1 class="page-title">Competitor Compare</h1>
+        <p class="page-subtitle">Side-by-side website comparison</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+          <div class="form-group"><label>Website 1</label><input type="text" id="compareUrl1" placeholder="e.g., business1.com"></div>
+          <div class="form-group"><label>Website 2</label><input type="text" id="compareUrl2" placeholder="e.g., business2.com"></div>
+        </div>
+        <button class="btn btn-primary" onclick="doCompare()">Compare</button>
+        <div id="compareResults" style="margin-top:24px;"></div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ PROPOSALS ═══════════════ -->
+    <div class="page" id="page-proposals">
+      <div class="page-content">
+        <h1 class="page-title">Proposals</h1>
+        <p class="page-subtitle">AI-drafted client proposals</p>
+        <div style="display:flex;gap:12px;margin-bottom:24px;">
+          <input type="text" id="proposalTitle" placeholder="Proposal title" style="flex:1;">
+          <input type="text" id="proposalClient" placeholder="Client name" style="flex:1;">
+          <button class="btn btn-primary" onclick="doCreateProposal()">Generate Proposal</button>
+        </div>
+        <div id="proposalsList"></div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ CASE STUDIES ═══════════════ -->
+    <div class="page" id="page-case-studies">
+      <div class="page-content">
+        <h1 class="page-title">Case Studies</h1>
+        <p class="page-subtitle">Build before/after case study pages</p>
+        <div class="form-group"><label>Title</label><input type="text" id="csTitle" placeholder="e.g., How We Helped Smith's Plumbing Get 50 New Customers"></div>
+        <div class="form-group"><label>Client Name</label><input type="text" id="csClient" placeholder="Client name"></div>
+        <div class="form-group"><label>Description</label><textarea id="csDescription" placeholder="Describe the transformation..."></textarea></div>
+        <button class="btn btn-primary" onclick="doCreateCaseStudy()">Create Case Study</button>
+        <div id="caseStudiesList" style="margin-top:24px;"></div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ ROI CALCULATOR ═══════════════ -->
+    <div class="page" id="page-roi-calculator">
+      <div class="page-content">
+        <h1 class="page-title">ROI Calculator</h1>
+        <p class="page-subtitle">Show clients the value of your services</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div class="form-group"><label>Client's Monthly Revenue ($)</label><input type="number" id="roiRevenue" placeholder="e.g., 50000" value="50000"></div>
+          <div class="form-group"><label>Current Monthly Website Traffic</label><input type="number" id="roiTraffic" placeholder="e.g., 500" value="500"></div>
+          <div class="form-group"><label>Projected Traffic Increase (%)</label><input type="number" id="roiIncrease" placeholder="e.g., 50" value="50"></div>
+          <div class="form-group"><label>Website Conversion Rate (%)</label><input type="number" id="roiConversion" placeholder="e.g., 3" value="3"></div>
+        </div>
+        <button class="btn btn-primary" onclick="doRoiCalc()">Calculate ROI</button>
+        <div id="roiResults" style="margin-top:24px;"></div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ INBOX ═══════════════ -->
+    <div class="page" id="page-inbox">
+      <div class="page-content">
+        <h1 class="page-title">Inbox</h1>
+        <p class="page-subtitle">Replies from campaigns and manual sends</p>
+        <div class="empty-state"><h3>No messages yet</h3><p>Replies from your campaigns and pitches will appear here.</p></div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ CAMPAIGNS ═══════════════ -->
+    <div class="page" id="page-campaigns">
+      <div class="page-content">
+        <h1 class="page-title">Campaigns</h1>
+        <p class="page-subtitle">Cold email orchestration at scale</p>
+        <div style="display:flex;gap:12px;margin-bottom:24px;">
+          <input type="text" id="campaignName" placeholder="Campaign name" style="flex:1;">
+          <button class="btn btn-primary" onclick="doCreateCampaign()">Create Campaign</button>
+        </div>
+        <div id="campaignsList"></div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ TEMPLATE LIBRARY ═══════════════ -->
+    <div class="page" id="page-templates">
+      <div class="page-content">
+        <h1 class="page-title">Template Library</h1>
+        <p class="page-subtitle">Reusable pitch email templates with merge tags</p>
+        <div class="form-group"><label>Template Name</label><input type="text" id="tplName" placeholder="e.g., Cold Pitch - No Website"></div>
+        <div class="form-group"><label>Subject Line</label><input type="text" id="tplSubject" placeholder="e.g., Quick question about {business_name}"></div>
+        <div class="form-group"><label>Email Body</label><textarea id="tplBody" rows="6" placeholder="Hi there,&#10;&#10;I noticed {business_name} doesn't have a website...&#10;&#10;Use merge tags: {business_name}, {city}, {niche}, {website}"></textarea></div>
+        <button class="btn btn-primary" onclick="doCreateTemplate()">Save Template</button>
+        <div id="templatesList" style="margin-top:24px;"></div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ REVIEW TEMPLATES ═══════════════ -->
+    <div class="page" id="page-review-templates">
+      <div class="page-content">
+        <h1 class="page-title">Review Templates</h1>
+        <p class="page-subtitle">Templates for asking clients for Google reviews</p>
+        <div class="card" style="margin-bottom:16px;">
+          <h3 style="font-size:0.95rem;margin-bottom:8px;">Post-Service Review Request</h3>
+          <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.6;">Hi {client_name},<br><br>Thank you for choosing {business_name}! We hope you were happy with our service.<br><br>If you have a moment, would you mind leaving us a quick Google review? It really helps other customers find us.<br><br>Here's the link: {review_link}<br><br>Thank you!</p>
+        </div>
+        <div class="card">
+          <h3 style="font-size:0.95rem;margin-bottom:8px;">Follow-Up Review Request</h3>
+          <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.6;">Hi {client_name},<br><br>Just following up — we'd love to hear about your experience with {business_name}.<br><br>A quick review on Google would mean a lot to our team: {review_link}<br><br>Thanks so much!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ DELIVERABILITY ═══════════════ -->
+    <div class="page" id="page-deliverability">
+      <div class="page-content">
+        <h1 class="page-title">Deliverability</h1>
+        <p class="page-subtitle">Email warmup and inbox placement testing</p>
+        <div class="stats-grid">
+          <div class="card"><div class="card-title">Inbox Rate</div><div class="card-value" style="color:var(--green);">—</div></div>
+          <div class="card"><div class="card-title">Spam Rate</div><div class="card-value" style="color:var(--red);">—</div></div>
+          <div class="card"><div class="card-title">Warmup Status</div><div class="card-value">Not Started</div></div>
+        </div>
+        <div class="empty-state"><h3>Connect your email to get started</h3><p>Link your sending email to start warmup and test deliverability across Gmail, Outlook, Yahoo, and Proton.</p></div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ AI WEBSITES ═══════════════ -->
+    <div class="page" id="page-websites">
+      <div class="page-content">
+        <h1 class="page-title">AI Website Generator</h1>
+        <p class="page-subtitle">Generate complete demo websites for prospects in seconds</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div class="form-group"><label>Business Name</label><input type="text" id="webBizName" placeholder="e.g., Smith's Plumbing"></div>
+          <div class="form-group"><label>Niche / Industry</label><input type="text" id="webNiche" placeholder="e.g., Plumber"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div class="form-group"><label>Location</label><input type="text" id="webLocation" placeholder="e.g., Dallas, TX"></div>
+          <div class="form-group"><label>Phone (optional)</label><input type="text" id="webPhone" placeholder="e.g., (214) 555-1234"></div>
+        </div>
+        <button class="btn btn-primary" onclick="doGenerateWebsite()">Generate Website</button>
+        <div id="websitePreview" style="margin-top:24px;"></div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ PORTFOLIO ═══════════════ -->
+    <div class="page" id="page-portfolio">
+      <div class="page-content">
+        <h1 class="page-title">My Portfolio</h1>
+        <p class="page-subtitle">Public portfolio page showcasing your case studies</p>
+        <div class="empty-state"><h3>No portfolio items yet</h3><p>Create case studies and publish them to build your portfolio.</p><button class="btn btn-primary" onclick="navigate('case-studies')">Create Case Study</button></div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ BILLING ═══════════════ -->
+    <div class="page" id="page-billing">
+      <div class="page-content">
+        <h1 class="page-title">Billing</h1>
+        <p class="page-subtitle">Manage your subscription</p>
+        <div class="card" style="margin-bottom:24px;">
+          <h3 style="margin-bottom:12px;">Current Plan: <span style="color:var(--green);" id="billingPlan">Free</span></h3>
+          <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px;">You're on the Free plan with limited searches and features.</p>
+        </div>
+        <h2 style="font-size:1.1rem;margin-bottom:16px;">Available Plans</h2>
+        <div class="stats-grid">
+          <div class="card" style="border-color:var(--text-muted);">
+            <h3>Free</h3><div class="card-value">$0<span style="font-size:0.8rem;color:var(--text-muted);">/mo</span></div>
+            <ul style="font-size:0.8rem;color:var(--text-secondary);margin-top:12px;list-style:none;"><li>✓ 5 searches/month</li><li>✓ 5 AI pitches</li><li>✓ 5 saved leads</li><li>✓ All tools included</li></ul>
+          </div>
+          <div class="card" style="border-color:var(--green);">
+            <h3 style="color:var(--green);">Pro</h3><div class="card-value">$13.99<span style="font-size:0.8rem;color:var(--text-muted);">/mo</span></div>
+            <ul style="font-size:0.8rem;color:var(--text-secondary);margin-top:12px;list-style:none;"><li>✓ 100 searches/month</li><li>✓ 100 AI pitches</li><li>✓ 100 saved leads</li><li>✓ 2,000 email sends</li></ul>
+            <button class="btn btn-primary" style="width:100%;margin-top:12px;">Upgrade to Pro</button>
+          </div>
+          <div class="card" style="border-color:var(--cyan);">
+            <h3 style="color:var(--cyan);">Max</h3><div class="card-value">$23.99<span style="font-size:0.8rem;color:var(--text-muted);">/mo</span></div>
+            <ul style="font-size:0.8rem;color:var(--text-secondary);margin-top:12px;list-style:none;"><li>✓ 300 searches/month</li><li>✓ 300 AI pitches</li><li>✓ 300 saved leads</li><li>✓ 10,000 email sends</li><li>✓ 3 team seats</li></ul>
+            <button class="btn btn-secondary" style="width:100%;margin-top:12px;">Upgrade to Max</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ SETTINGS ═══════════════ -->
+    <div class="page" id="page-settings">
+      <div class="page-content">
+        <h1 class="page-title">Settings</h1>
+        <p class="page-subtitle">Account settings and preferences</p>
+        <div class="card" style="max-width:500px;">
+          <div class="form-group"><label>Full Name</label><input type="text" id="settingsName" placeholder="Your name"></div>
+          <div class="form-group"><label>Email</label><input type="email" id="settingsEmail" placeholder="your@email.com" disabled></div>
+          <button class="btn btn-primary">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal (for pitch preview, etc.) -->
+  <div class="modal-overlay" id="modalOverlay" style="display:none;" onclick="closeModal(event)">
+    <div class="modal" id="modalContent" onclick="event.stopPropagation()"></div>
+  </div>
+
+  <script src="assets/api.js"></script>
+  <script src="assets/dashboard.js"></script>
+</body>
+</html>

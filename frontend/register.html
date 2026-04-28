@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FreelanceLeads.io - Sign Up</title>
+  <link rel="stylesheet" href="assets/app.css">
+  <style>
+    .auth-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .auth-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 40px; width: 100%; max-width: 420px; }
+    .auth-logo { text-align: center; font-size: 1.5rem; font-weight: 700; color: var(--green); margin-bottom: 8px; }
+    .auth-subtitle { text-align: center; color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 32px; }
+    .auth-error { background: rgba(239,68,68,0.1); color: var(--red); border: 1px solid rgba(239,68,68,0.2); padding: 10px; border-radius: 8px; font-size: 0.85rem; margin-bottom: 16px; display: none; }
+    .auth-footer { text-align: center; margin-top: 20px; font-size: 0.85rem; color: var(--text-secondary); }
+    .features { display: flex; gap: 12px; margin-bottom: 24px; }
+    .feature { flex: 1; text-align: center; font-size: 0.75rem; color: var(--text-muted); padding: 8px; background: var(--bg-primary); border-radius: 8px; }
+    .feature strong { display: block; color: var(--text-primary); font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <div class="auth-card">
+      <div class="auth-logo">🔍 FreelanceLeads.io</div>
+      <div class="auth-subtitle">Create your free account</div>
+      <div class="features">
+        <div class="feature"><strong>5</strong>Free searches</div>
+        <div class="feature"><strong>5</strong>AI pitches</div>
+        <div class="feature"><strong>25+</strong>Tools</div>
+      </div>
+      <div class="auth-error" id="error"></div>
+      <form onsubmit="doRegister(event)">
+        <div class="form-group"><label>Full Name</label><input type="text" id="name" placeholder="John Doe" required></div>
+        <div class="form-group"><label>Email</label><input type="email" id="email" placeholder="you@example.com" required></div>
+        <div class="form-group"><label>Password</label><input type="password" id="password" placeholder="Min 8 characters" required minlength="8"></div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;padding:12px;" type="submit" id="regBtn">Create Account</button>
+      </form>
+      <div class="auth-footer">Already have an account? <a href="login.html">Sign in</a></div>
+    </div>
+  </div>
+  <script src="assets/api.js"></script>
+  <script>
+    if (api.isLoggedIn()) window.location.href = "dashboard.html";
+    async function doRegister(e) {
+      e.preventDefault();
+      const btn = document.getElementById("regBtn");
+      btn.disabled = true; btn.textContent = "Creating account...";
+      try {
+        await api.register(document.getElementById("email").value, document.getElementById("password").value, document.getElementById("name").value);
+        window.location.href = "dashboard.html";
+      } catch (err) {
+        document.getElementById("error").textContent = err.message;
+        document.getElementById("error").style.display = "block";
+        btn.disabled = false; btn.textContent = "Create Account";
+      }
+    }
+  </script>
+</body>
+</html>
